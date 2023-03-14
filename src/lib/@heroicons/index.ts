@@ -8,12 +8,13 @@ import {
   XMarkIcon as XMarkIconMini,
   InformationCircleIcon as InformationCircleIconMini,
   CheckIcon as CheckIconMini,
-} from "@heroicons/react/20/solid";
+
 import {
   InformationCircleIcon,
   HomeIcon as HomeIcon,
+
   QuestionMarkCircleIcon as HelpIcon,
-  PhoneIcon as PhoneIcon,
+  PhoneIcon,
   ClipboardDocumentListIcon as InvoiceIcon,
   ArrowRightOnRectangleIcon as LogoutIcon,
   Cog8ToothIcon as SettingIcon,
@@ -24,7 +25,7 @@ import {
   TrashIcon as DeleteIcon,
   PencilIcon as EditIcon,
   BuildingLibraryIcon as BankIcon,
-  PlusIcon as PlusIcon,
+
 } from "@heroicons/react/24/outline";
 
 export {

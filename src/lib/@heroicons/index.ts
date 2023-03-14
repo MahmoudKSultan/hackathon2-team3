@@ -8,12 +8,14 @@ import {
   XMarkIcon as XMarkIconMini,
   InformationCircleIcon as InformationCircleIconMini,
   CheckIcon as CheckIconMini,
- 
+  PlusIcon as PlusIconMini,
+  ChevronDownIcon as ChevronDownIconMini,
 } from "@heroicons/react/20/solid";
-import { InformationCircleIcon ,
-  HomeIcon as HomeIcon,
+import {
+  InformationCircleIcon,
+  HomeIcon,
   QuestionMarkCircleIcon as HelpIcon,
-  PhoneIcon as PhoneIcon,
+  PhoneIcon,
   ClipboardDocumentListIcon as InvoiceIcon,
   ArrowRightOnRectangleIcon as LogoutIcon,
   Cog8ToothIcon as SettingIcon,
@@ -47,5 +49,7 @@ export {
   BurgerIcon,
   DeleteIcon,
   EditIcon,
-  BankIcon
+  BankIcon,
+  PlusIconMini,
+  ChevronDownIconMini,
 };

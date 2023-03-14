@@ -11,6 +11,7 @@ import {
   PlusIcon as PlusIconMini,
   ChevronDownIcon as ChevronDownIconMini,
 } from "@heroicons/react/20/solid";
+
 import {
   InformationCircleIcon,
   HomeIcon,
@@ -20,11 +21,13 @@ import {
   ArrowRightOnRectangleIcon as LogoutIcon,
   Cog8ToothIcon as SettingIcon,
   PaperAirplaneIcon as PaperAirplane,
-  ArrowDownTrayIcon as ArrowDoewnIcon,
+  ArrowDownTrayIcon as DownoldIcon,
+  ChevronDownIcon as ArrowDownIcon,
   Bars3Icon as BurgerIcon,
   TrashIcon as DeleteIcon,
   PencilIcon as EditIcon,
   BuildingLibraryIcon as BankIcon,
+  PlusIcon,
 } from "@heroicons/react/24/outline";
 
 export {
@@ -45,11 +48,13 @@ export {
   LogoutIcon,
   SettingIcon,
   PaperAirplane,
-  ArrowDoewnIcon,
+  DownoldIcon,
   BurgerIcon,
   DeleteIcon,
   EditIcon,
   BankIcon,
   PlusIconMini,
   ChevronDownIconMini,
+  ArrowDownIcon,
+  PlusIcon,
 };

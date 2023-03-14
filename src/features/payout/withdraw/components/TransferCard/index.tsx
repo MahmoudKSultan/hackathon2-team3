@@ -17,20 +17,22 @@ export function TransferCard({
 }) {
   return (
     <div className="">
-      <div className="flex justify-between items-center">
-        <h2
-          className={`font-semibold text-xl text-${
-            centerTitle ? "center" : "left"
-          }`}
-        >
-          {title}
-        </h2>
-        {/* x icon */}
-        <IconButton className="" buttonSize="large" onClick={closeModal}>
-          <XMarkIconMini />
-        </IconButton>
-      </div>
-
+      {/* x icon */}
+      <IconButton
+        className="absolute top-3 right-2  "
+        buttonSize="large"
+        onClick={closeModal}
+      >
+        {" "}
+        <XMarkIconMini />
+      </IconButton>
+      <h2
+        className={`font-bold text-lg mb-5 text-${
+          centerTitle ? "center" : "left"
+        }`}
+      >
+        {title}
+      </h2>
       {children}
     </div>
   );

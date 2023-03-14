@@ -42,7 +42,7 @@ export const Dropdown = ({
                 <button
                   className={` group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                   onClick={() => setSelected(item.label)}
-                  {...register(name)}
+                  // {...register(name)}
                 >
                   {item.label}
                 </button>

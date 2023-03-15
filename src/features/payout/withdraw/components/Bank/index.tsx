@@ -2,7 +2,8 @@ import { Button, Select, Input, Image } from "components";
 import Modal from "components/Modal";
 import { TransferCard } from "../TransferCard";
 import useModal from "hooks/useModal";
-import { PlusIconMini, ChevronDownIconMini } from "lib/@heroicons";
+// import { PlusIconMini, ChevronDownIconMini } from "lib/@heroicons";
+import { PlusIcon, ArrowDownIcon } from "lib/@heroicons";
 
 import ListOfBanks from "../ListOfBanks";
 import WithdrawPreview from "../WithdrawPreview";
@@ -126,7 +127,7 @@ export const Bank = () => {
             <div>
               <Menu.Button className="inline-flex w-full justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
                 Options
-                <ChevronDownIconMini
+                <ArrowDownIcon
                   className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
                   aria-hidden="true"
                 />
@@ -265,7 +266,7 @@ export const Bank = () => {
             className="text-blue-light cursor-pointer flex flex-1 justify-end "
             onClick={modalBank.openModal}
           >
-            <PlusIconMini className="w-5" />
+            <PlusIcon className="w-5" />
             Add bank account
           </p>
 

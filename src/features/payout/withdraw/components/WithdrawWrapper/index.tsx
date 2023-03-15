@@ -1,22 +1,38 @@
-import { Card, Input } from "components";
-import RadioButton from "components/RadioButton";
+import { Card, Input, RadioButton } from "components";
 import { BankIcon } from "lib/@heroicons";
 import { useState } from "react";
-import Bank from "../Bank";
 import Cash from "../Cash";
-// import MyRadioGroup from "components/RadioButton";
+import Bank from "../Bank";
 import { RadioGroup } from "@headlessui/react";
+import { useForm } from "react-hook-form";
+import { getFieldHelperText } from "utils";
 
 export const WithdrawWrapper = () => {
   const [selected, setSelected] = useState("Cash");
   const [amount, setAmount] = useState();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
   const handlePaymentChange = (value) => {
     setSelected(() => value);
   };
   const handleSetAmount = (value) => {
     setAmount(() => value);
   };
+  const onSubmit = handleSubmit((data) => {
+    console.log(data);
+  });
 
+  const validateNumberField = (value: string): string | boolean => {
+    if (value.includes(".")) {
+      return "You can't withdraw cents in cash.";
+    }
+    return true;
+  };
   //   const handleSetAmount = (value: any) => {
   //     console.log("test ", VALIDATION_RULES.isNumber.test(value), value);
   //     if (VALIDATION_RULES.isNumber.test(value.slice(1))) {
@@ -33,64 +49,73 @@ export const WithdrawWrapper = () => {
           Choose Payment Method
         </h3>
 
-        <div>
-          {/* <MyRadioGroup /> */}
-          <RadioGroup className="max-w-[450px] flex justify-center items-center gap-5 my-8 mx-auto">
-            <RadioButton
-              selected={selected}
-              handleChange={() => handlePaymentChange("Cash")}
-              label="Cash"
-              className="flex-1 sm:flex-[0.5]"
-            >
-              <BankIcon className="w-8" />
-            </RadioButton>
-            <RadioButton
-              selected={selected}
-              handleChange={() => handlePaymentChange("Bank")}
-              label="Bank"
-              className="flex-1 sm:flex-[0.5]"
-            >
-              <BankIcon className="w-8" />
-            </RadioButton>
-          </RadioGroup>
+        <form noValidate onSubmit={onSubmit}>
+          <div>
+            <RadioGroup className="max-w-[450px] flex justify-center items-center gap-5 my-8 mx-auto">
+              <RadioButton
+                selected={selected}
+                handleChange={() => handlePaymentChange("Cash")}
+                label="Cash"
+                className="flex-1 sm:flex-[0.5]"
+              >
+                <BankIcon className="w-8" />
+              </RadioButton>
+              <RadioButton
+                selected={selected}
+                handleChange={() => handlePaymentChange("Bank")}
+                label="Bank"
+                className="flex-1 sm:flex-[0.5]"
+              >
+                <BankIcon className="w-8" />
+              </RadioButton>
+            </RadioGroup>
 
-          {/* Amount */}
-          <div className="flex justify-center">
-            <div className=" w-44">
-              <div className="flex justify-between items-end text-xs leading-5 mb-1">
-                <p className="text-base font-semibold">Amount</p>
-                <div>
-                  <span className="font-semibold text-[#9E9E9E]">
-                    Available
-                  </span>{" "}
-                  <span
-                    className="cursor-pointer font-bold text-blue-light"
-                    onClick={() =>
-                      handleSetAmount("240.19".slice(0, "240.19".indexOf(".")))
-                    }
-                  >
-                    $240.19
-                  </span>
+            {/* Amount */}
+            <div className="flex justify-center">
+              <div className=" w-44">
+                <div className="flex justify-between items-end text-xs leading-5 mb-1">
+                  <p className="text-base font-semibold">Amount</p>
+                  <div>
+                    <span className="font-semibold text-[#9E9E9E]">
+                      Available
+                    </span>{" "}
+                    <span
+                      className="cursor-pointer font-bold text-blue-light"
+                      onClick={() =>
+                        handleSetAmount(
+                          "240.19".slice(0, "240.19".indexOf("."))
+                        )
+                      }
+                    >
+                      $240.19
+                    </span>
+                  </div>
                 </div>
+                <Input
+                  id="amount"
+                  inputSize="small"
+                  inputClassName="pl-7 py-3 text-center text-2xl font-bold text-black bg-[#FDFDFD]"
+                  type="number"
+                  min={0}
+                  max={250.19}
+                  value={amount}
+                  startIcon="$"
+                  {...register("amount", {
+                    required: "field is empty",
+                    validate: validateNumberField,
+                    onChange: (e) => handleSetAmount(e.target.value),
+                  })}
+                  helperText={getFieldHelperText(
+                    "error",
+                    errors.amount?.message
+                  )}
+                />
               </div>
-              {/* <Input name="amount" type="number" min={0} /> */}
-              <Input
-                id="amount-input"
-                inputSize="small"
-                inputClassName="pl-7 py-3 text-center text-2xl font-bold text-black bg-[#FDFDFD]"
-                type="number"
-                min={0}
-                max={250.19}
-                value={amount}
-                onChange={(e) => handleSetAmount(e.target.value)}
-                startIcon="$"
-                pattern="/[0-9]+"
-              />
             </div>
           </div>
-        </div>
-        <div className="flex justify-center items-center"></div>
-        {selected === "Cash" ? <Cash /> : <Bank />}
+          <div className="flex justify-center items-center"></div>
+          {selected === "Cash" ? <Cash /> : <Bank />}
+        </form>
       </Card>
     </>
   );

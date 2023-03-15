@@ -9,8 +9,6 @@ export function SelectList({
   selectedOptionComp,
   children,
 }) {
-  console.log(selectedOptionComp);
-
   return (
     <Listbox value={selected} onChange={setSelected}>
       <div className="relative mt-1" dir="rtl">

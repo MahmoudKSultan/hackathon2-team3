@@ -3,21 +3,40 @@ import Modal from "components/Modal";
 import { useForm } from "react-hook-form";
 import { TransferCard } from "features/payout";
 import { getFieldHelperText } from "utils";
+import { API_SERVICES_URLS } from "data";
+import { useSwrFetch } from "hooks";
+import { useState } from "react";
 
-type FormAddRecipient = {
-  fullName: string;
-  phone: number;
-  id: number;
-};
+// type FormAddRecipient = {
+//   fullName: string;
+//   phone: number;
+//   id: number;
+// };
 
 export const AddRecipient = ({ closeModal }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<>();
+    getValues,
+  } = useForm();
+  const [values, setValues] = useState();
 
-  const onSubmit = (data) => console.log(data);
+  const { data, error, isLoading } = useSwrFetch(
+    API_SERVICES_URLS.FREELANCER.RECIPIENT_ADD_WITH_CODE,
+    {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ ...values }),
+    }
+  );
+
+  const onSubmit = (data) =>
+    setValues({ idNumber: data.idNumber, mobile: data.mobile });
+  console.log(data);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="my-7">
@@ -55,8 +74,9 @@ export const AddRecipient = ({ closeModal }) => {
       </div>
       <div>
         <Button fullWidth={true} type="submit" className="mb-5">
-          Confirm
+          {isLoading ? "Loading..." : "Confirm"}
         </Button>
+        <p className="text-xs text-center text-red">{error && error}</p>
       </div>
     </form>
   );

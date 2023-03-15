@@ -19,8 +19,11 @@ export const API_SERVICES_URLS = {
   },
   FREELANCER: {
     BANK_DETAILS: (id: string) => `/withdraw/details/${id}`,
+    OFFICE_LIST: "/withdraw/office-list",
+    RECIPIENTS_LIST: "/recipient/list",
+    RECIPIENT_ADD_WITH_CODE: "/recipient/send-code",
     // BANK_WITHDRAW: (bankid: string, )
-  }
+  },
 } as const;
 
 export const COOKIES_KEYS = {

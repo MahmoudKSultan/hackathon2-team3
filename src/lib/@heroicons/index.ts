@@ -8,6 +8,7 @@ import {
   XMarkIcon as XMarkIconMini,
   InformationCircleIcon as InformationCircleIconMini,
   CheckIcon as CheckIconMini,
+  MinusCircleIcon as Point,
  
 } from "@heroicons/react/20/solid";
 import { InformationCircleIcon ,
@@ -47,5 +48,6 @@ export {
   BurgerIcon,
   DeleteIcon,
   EditIcon,
-  BankIcon
+  BankIcon,
+  Point
 };

@@ -4,7 +4,6 @@ import { BankIcon } from "lib/@heroicons";
 import { useState } from "react";
 import Bank from "../Bank";
 import Cash from "../Cash";
-
 export const WrapBalance = () => {
     const [selectedValue, setSelectedValue] = useState("cash");
 

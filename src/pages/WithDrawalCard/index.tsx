@@ -22,7 +22,7 @@ const WithdrawalFetcher = async (url: string) => {
 };
 
 const Withdrawal = () => {
-  const withdrawId = "6410cc5087086b00f03d5ff6";
+  const withdrawId = "64121e087fb7075da8210797";
   const type = "bank";
   const { data, error, isLoading } = useSWR(
     `https://talents-valley-backend.herokuapp.com/api/withdraw/details/${withdrawId}`,

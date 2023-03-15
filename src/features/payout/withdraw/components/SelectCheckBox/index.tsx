@@ -11,7 +11,7 @@ export const SelectCheckBox = ({selectedOption,setSelectedOption}) => {
 
   const toggling = () => setIsOpen(!isOpen);
 
-  const onOptionClicked = (value) => () => {
+  const onOptionClicked = (value: string) => () => {
     setSelectedOption(value);
     console.log(selectedOption);
   };

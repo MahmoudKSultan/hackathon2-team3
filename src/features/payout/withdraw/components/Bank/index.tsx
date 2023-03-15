@@ -14,30 +14,33 @@ import { getCookie } from "lib/js-cookie";
 import { COOKIES_KEYS } from "data";
 import axios from "axios";
 import { useSWR } from "lib/swr";
+import useFetch from "../../hook/useFetch";
 
-type FormValues = {
-  amount: string;
-};
-type BankValues = {
-  accountName: string;
-  accountNumber: string;
-  bankBranch: string;
-  ledger: string;
-};
+// type FormValues = {
+//   amount: string;
+// };
+// type BankValues = {
+//   accountName: string;
+//   accountNumber: string;
+//   bankBranch: string;
+//   ledger: string;
+// };
 
 export const Bank = () => {
   const modalBank = useModal();
-  const modalEditBank = useModal();
+  const modalBankList = useModal();
   const modalWithdraw = useModal();
 
   const [amount, setAmount] = useState(0);
 
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-  } = useForm<BankValues>();
+  const [bankData, setBankData] = useState({
+    accountName: "",
+    accountNumber: "",
+    bankBranch: "",
+    ledger: "",
+  });
+
+  const { fetchData, isLoading, error } = useFetch();
 
   const links = [
     { href: "/account-settings", label: "Account settings" },
@@ -46,28 +49,35 @@ export const Bank = () => {
     { href: "/sign-out", label: "Sign out" },
   ];
 
-  const getListOfBank = async (url: string) => {
-    const currentUser = getCookie(COOKIES_KEYS.currentUser);
-    const res = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${currentUser?.accessToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-    return res.data;
+  const handleInput = (e) => {
+    const formField = e.target.name;
+    setBankData({ ...bankData, [formField]: e.target.value });
   };
 
-  const { data, error, isLoading } = useSWR(
-    "https://talents-valley-backend.herokuapp.com/api/bank/listing?offset=0&limit=10",
-    getListOfBank
-  );
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-    // setBankData(data);
-  });
+    const formData = {
+      accountName: bankData.accountName,
+      accountNumber: bankData.accountNumber,
+      bankBranch: bankData.bankBranch,
+      ledger: bankData.ledger,
+    };
+    console.log(formData);
 
-  console.log(getValues());
+    // const currentUser = getCookie(COOKIES_KEYS.currentUser);
+    // const options = {
+    //   method: "POST",
+    //   headers: {
+    //     Authorization: `Bearer ${currentUser?.accessToken}`,
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(formData),
+    // };
+    // const data = await fetchData(options, `bank/send-code`);
+  };
+
+  console.log("test render bank");
 
   return (
     <div>
@@ -109,7 +119,7 @@ export const Bank = () => {
             <p className="text-xl font-semibold">Bank</p>
             <p
               className="text-blue-light cursor-pointer"
-              onClick={modalEditBank.openModal}
+              onClick={modalBankList.openModal}
             >
               Edit
             </p>
@@ -281,13 +291,19 @@ export const Bank = () => {
         </div>
       </div>
       {/* Modal for edit bank account */}
-      <Modal {...modalEditBank} className="!w-[700px] !px-28">
+      <Modal {...modalBankList} className="!w-[700px] !px-28">
         <TransferCard
           centerTitle={false}
           title="Bank Accounts"
-          closeModal={modalEditBank.closeModal}
+          closeModal={modalBankList.closeModal}
         >
-          <ListOfBanks />
+          <ListOfBanks
+            // register={register}
+            // onSubmit={onSubmit}
+            // setValue={setValue}
+            // bankData={data}
+            setBankData={setBankData}
+          />
         </TransferCard>
       </Modal>
       {/* Modal for Withdraw */}
@@ -308,9 +324,12 @@ export const Bank = () => {
           closeModal={modalBank.closeModal}
         >
           <ModalAddBankAccount
-            data={data}
-            register={register}
-            onSubmit={onSubmit}
+            // data={data}
+            setBankData={setBankData}
+            handleInput={handleInput}
+            handleSubmit={handleSubmit}
+            // register={register}
+            // onSubmit={onSubmit}
           />
         </TransferCard>
       </Modal>

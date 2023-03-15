@@ -7,7 +7,15 @@ import axios from "axios";
 import { COOKIES_KEYS } from "data";
 import { useSWR } from "lib/swr";
 
-export const ListOfBanks = () => {
+import ModalAddBankAccount from "../ModalAddBankAccount";
+import useModal from "hooks/useModal";
+import Modal from "components/Modal";
+import TransferCard from "../TransferCard";
+
+import ItemBank from "../ItemBank";
+
+export const ListOfBanks = ({ bankData, setBankData = (f) => f }) => {
+  const modalEditBank = useModal();
   const getListOfBank = async (url: string) => {
     const currentUser = getCookie(COOKIES_KEYS.currentUser);
     const res = await axios.get(url, {
@@ -24,44 +32,42 @@ export const ListOfBanks = () => {
     getListOfBank
   );
 
-  console.log(data);
+  // console.log("test data", data);
+
+  // const handleEdit = (id: any) => {
+  //   const { data, error, isLoading } = useSWR(
+  //     `https://talents-valley-backend.herokuapp.com/api/bank/details/${id}`,
+  //     getListOfBank
+  //   );
+
+  //   return data.data;
+  // };
 
   return (
     <div className="">
       {data?.data?.banks?.map((bank: any) => {
         return (
-          <MiniCard className="">
-            <div className="flex justify-between">
-              <p className="font-semibold text-xl">{bank.accountName}</p>
-              <div className="flex gap-3 ">
-                <DeleteIcon className="w-5" />
-                <EditIcon className="w-5" />
-              </div>
-            </div>
-            <div>
-              <p className="text-xl">{bank.accountNumber}</p>
-            </div>
-          </MiniCard>
+          <ItemBank bank={bank} setBankData={setBankData} bankData={bankData} />
         );
       })}
-      {/* <MiniCard className="">
-        <div className="flex justify-between">
-          <p className="font-semibold text-xl">Safa Mousa</p>
-          <div className="flex gap-3 ">
-            <DeleteIcon className="w-5" />
-            <EditIcon className="w-5" />
-          </div>
-        </div>
-        <div>
-          <p className="text-xl">0452-1064559-001-3100-000</p>
-        </div>
-      </MiniCard> */}
+
+      {/* Modal for add bank account */}
+      <Modal {...modalEditBank} className="!w-[700px] !px-28">
+        <TransferCard
+          centerTitle={false}
+          title="Add Bank Account"
+          closeModal={modalEditBank.closeModal}
+        >
+          <ModalAddBankAccount data={data} setBankData={setBankData} />
+        </TransferCard>
+      </Modal>
       <div className="flex gap-4 mt-8">
         <Button
-          type="submit"
+          type="button"
           buttonSize="small"
           fullWidth
           className="bg-white border text-2xl border-gray-dark !text-black hover:!text-white"
+          onClick={() => modalEditBank.openModal()}
         >
           Add
         </Button>

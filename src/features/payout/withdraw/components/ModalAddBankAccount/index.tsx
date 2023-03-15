@@ -11,49 +11,60 @@ import { useForm, Controller } from "react-hook-form";
 import Dropdown from "../Dropdown";
 
 export const ModalAddBankAccount = ({
-  data,
+  bankData = null,
   setBankData = (f) => f,
-  register,
-  onSubmit,
+  handleInput = (f) => f,
+  handleSubmit = (f) => f,
 }) => {
-  const optionsStatus = [
-    { value: "1", label: "Option 1" },
-    { value: "2", label: "Option 2" },
-    { value: "3", label: "Option 3" },
+  console.log(bankData);
+
+  const branches = [
+    {
+      value: "Rimal",
+      label: "0454 - Rimal",
+    },
+    {
+      value: "Nussairat",
+      label: "0448 - Nussairat",
+    },
+    {
+      value: "Main Branch",
+      label: "0451 - Main Branch",
+    },
+    {
+      value: "Khan Younis",
+      label: "0452 - Khan Younis",
+    },
+    {
+      value: "Jabalia",
+      label: "0453 - Jabalia",
+    },
+    {
+      value: "Rafah",
+      label: "0454 - Rafah",
+    },
   ];
 
-  const getBankBranches = () => {
-    return data?.data?.banks?.map((bank: any) => {
-      return { value: bank._id, label: bank.bankBranch };
-    });
-  };
-  const getCurrency = () => {
-    return data?.data?.banks?.map((bank: any) => {
-      return { value: bank._id, label: bank.currency };
-    });
-  };
-  const getLedger = () => {
-    return data?.data?.banks?.map((bank: any) => {
-      return { value: bank._id, label: bank.ledger };
-    });
-  };
+  const ledger = [
+    {
+      value: "Cuurent",
+      label: "3000 - Cuurent",
+    },
+    {
+      value: "Saving",
+      label: "3100 - Saving",
+    },
+    {
+      value: "Saving For Every Citizen",
+      label: "3102 - Saving For Every Citizen",
+    },
+  ];
 
   return (
     <div>
-      <form onSubmit={onSubmit}>
-        {/* <Select
-          options={optionsStatus}
-          placeholder="Bank of Palestine"
-          id="bank-select"
-          label="Bank"
-          selectSize="small"
-          className="flex-1 basis-full  text-gray-dark font-semibold text-lg"
-          selectClassName="h-16 bg-gray-light"
-          disabled
-          {...register("name")}
-        /> */}
+      <form onSubmit={handleSubmit}>
         <Dropdown
-          data={getBankBranches()}
+          // data={branches}
           disabled
           label="Bank"
           placeholder="Bank of Palestine"
@@ -61,11 +72,15 @@ export const ModalAddBankAccount = ({
         <Input
           id="full-name-input"
           label="Account Owner Full Name"
+          name="accountName"
           //   placeholder="$0.00"
           inputSize="small"
           inputClassName="h-16 text-base"
           labelClassName="text-gray-dark font-semibold text-lg"
-          {...register("accountName")}
+          onChange={handleInput}
+          value={bankData?.accountName}
+          // setValue={data?.accountName}
+          // value={data?.accountName}
         />
         {/* <Select
           options={getBankBranches()}
@@ -77,20 +92,23 @@ export const ModalAddBankAccount = ({
           {...register("branch")}
         /> */}
         <Dropdown
-          data={getBankBranches()}
+          data={branches}
           label="Branch"
-          register={register}
           name="bankBranch"
+          bankData={bankData}
+          setBankData={setBankData}
         />
 
         <Input
           id="account-number-input"
           label="Account Number"
+          name="accountNumber"
           //   placeholder="Account Number"
           inputSize="small"
           inputClassName="h-16 text-base"
           labelClassName="text-gray-dark font-semibold text-lg"
-          {...register("accountNumber")}
+          onChange={handleInput}
+          value={bankData?.accountNumber}
         />
 
         {/* <Select
@@ -102,12 +120,7 @@ export const ModalAddBankAccount = ({
           selectClassName="h-16 bg-gray-light"
           {...register("currency")}
         /> */}
-        <Dropdown
-          data={getCurrency()}
-          label="Currency"
-          placeholder="USD"
-          disabled
-        />
+        <Dropdown label="Currency" placeholder="USD" disabled />
         {/* <Select
           options={getLedger()}
           id="ledger-select"
@@ -117,7 +130,14 @@ export const ModalAddBankAccount = ({
           selectClassName="h-16"
           {...register("ledger")}
         /> */}
-        <Dropdown data={getLedger()} label="Ledger" />
+        <Dropdown
+          data={ledger}
+          label="Ledger"
+          name="ledger"
+          bankData={bankData}
+          setBankData={setBankData}
+          getValues={() => setBankData()}
+        />
 
         <Button
           type="submit"

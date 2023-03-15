@@ -36,7 +36,7 @@ export function Modal({
               className={"my-24 mx-4"}
             >
               <Dialog.Panel
-                className={`sm:w-[450px] 2xl:w-[500px] transform overflow-hidden rounded-2xl bg-white py-5 px-7 text-left align-middle shadow-xl transition-all ${className}`}
+                className={`sm:w-[450px] 2xl:w-[500px] transform overflow-hidden rounded-2xl bg-white py-14 px-7 text-left align-middle shadow-xl transition-all ${className}`}
               >
                 {children}
               </Dialog.Panel>

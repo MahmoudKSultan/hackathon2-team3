@@ -8,10 +8,8 @@ import {
   XMarkIcon as XMarkIconMini,
   InformationCircleIcon as InformationCircleIconMini,
   CheckIcon as CheckIconMini,
- Bars3CenterLeftIcon as  BarsIcon
-  ChevronDownIcon as ChevronDownIconMini,
+  Bars3CenterLeftIcon as BarsIcon,
   MinusCircleIcon as Point,
- 
 } from "@heroicons/react/20/solid";
 import {
   InformationCircleIcon,
@@ -29,10 +27,9 @@ import {
   PencilIcon as EditIcon,
   BuildingLibraryIcon as BankIcon,
   MagnifyingGlassIcon as SearchIcon,
-  ChevronUpDownIcon as ChevronIcon ,
-  ChevronLeftIcon as ArrowLeft ,
-  ChevronRightIcon as ArrowRight ,
-  
+  ChevronUpDownIcon as ChevronIcon,
+  ChevronLeftIcon as ArrowLeft,
+  ChevronRightIcon as ArrowRight,
   PlusSmallIcon as PlusIcon,
 } from "@heroicons/react/24/outline";
 
@@ -58,16 +55,13 @@ export {
   BurgerIcon,
   DeleteIcon,
   EditIcon,
-  BankIcon,
   SearchIcon,
   ChevronIcon,
   BarsIcon,
   ArrowRight,
-  ArrowLeft
+  ArrowLeft,
   ArrowDownIcon,
   PlusIcon,
-  ChevronDownIconMini,
-
   BankIcon,
-  Point
+  Point,
 };

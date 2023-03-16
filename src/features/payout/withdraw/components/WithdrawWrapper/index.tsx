@@ -23,12 +23,9 @@ export const WithdrawWrapper = () => {
   useEffect(() => {
     if (data) {
       setLastWithdraw(data.data);
-      // setSelected(data);
       setSelected(data.data.withdraw.typeWithdraw.toUpperCase());
     }
   }, [data]);
-
-  console.log(lastWithdraw);
 
   const {
     register,

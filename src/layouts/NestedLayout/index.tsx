@@ -1,5 +1,4 @@
 import { NestedLayoutType } from 'layouts/types'
-
 export const NestedLayout: NestedLayoutType = ({
   left: Left,
   right: Right,
@@ -18,7 +17,6 @@ export const NestedLayout: NestedLayoutType = ({
       {!withoutBalanceCard &&
         <div className='mt-7 lg:sticky top-20 max-lg:w-full max-lg:-ml-12 '><Right /></div>
       }
-
     </div>
   )
 }

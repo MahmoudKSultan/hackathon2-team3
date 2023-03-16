@@ -10,6 +10,8 @@ import {
   CheckIcon as CheckIconMini,
  Bars3CenterLeftIcon as  BarsIcon
   ChevronDownIcon as ChevronDownIconMini,
+  MinusCircleIcon as Point,
+ 
 } from "@heroicons/react/20/solid";
 import {
   InformationCircleIcon,
@@ -66,4 +68,6 @@ export {
   PlusIcon,
   ChevronDownIconMini,
 
+  BankIcon,
+  Point
 };

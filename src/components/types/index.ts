@@ -23,6 +23,9 @@ type IconsVariantsType = {
 export interface CardProps extends DivElementType {}
 export type CardType = FC<CardProps>;
 
+export interface WithDrawalCardProps extends DivElementType {}
+export type WithDrawalCardType =FC<WithDrawalCardProps>;
+
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement>,
     CommonFormElementsType,

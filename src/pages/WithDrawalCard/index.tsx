@@ -8,8 +8,7 @@ import { getCookie } from "lib/js-cookie";
 import { COOKIES_KEYS } from "data";
 import axios from "axios";
 import VerticalTimeline from "features/payout/withdraw/components/VerticalTimeline";
-
-
+import Drawer from "react-modern-drawer";
 
 const currentUser = getCookie(COOKIES_KEYS.currentUser);
 
@@ -25,14 +24,18 @@ const WithdrawalFetcher = async (url: string) => {
 };
 
 const Withdrawal = () => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const toggleDrawer = () => {
+    setIsOpen((prevState) => !prevState);
+  };
+
   const withdrawId = "640f5ceb78fd73b40d217e72";
   const { data, error, isLoading } = useSWR(
     `https://talents-valley-backend.herokuapp.com/api/withdraw/details/${withdrawId}`,
     WithdrawalFetcher
   );
   console.log(data?.data.withdraw.typeWithdraw);
-
-
 
   const typeWithdraw = data?.data.withdraw.typeWithdraw;
   const withdraw = data?.data.withdraw;
@@ -48,7 +51,7 @@ const Withdrawal = () => {
   }
 
   let buttonText;
-  let Cancel
+  let Cancel;
   if (status === "pending") {
     buttonText = "Cancel Withdrawal";
   } else if (status === "sent" || status === "ready") {
@@ -63,12 +66,13 @@ const Withdrawal = () => {
   return (
     <div className="bg-[#F2F4F7] w-[30%] shadow-md h-full top-12 fixed  ">
       <div className="relative p-8 ">
-        <ChevronLeftIconMini className="h-7 absolute" />
+        <ChevronLeftIconMini onClick={toggleDrawer} className="h-7 absolute" />
         <p className="text-base font-medium tracking-wide text-center">
           Withdrawal
         </p>
       </div>
-      <Card className="mx-4">
+      
+      <Card className="mx-4" >
         <div className="flex justify-between  ">
           <p className="font-bold text-lg pb-2">
             ${data?.data.withdraw.amount}

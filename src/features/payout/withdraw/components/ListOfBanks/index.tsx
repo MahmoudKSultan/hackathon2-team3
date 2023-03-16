@@ -51,6 +51,7 @@ export const ListOfBanks = ({
             bank={bank}
             selectedItemBank={selectedItemBank}
             setSelectedItemBank={setSelectedItemBank}
+            key={bank._id}
             // modalBankList={modalBankList}
           />
         );

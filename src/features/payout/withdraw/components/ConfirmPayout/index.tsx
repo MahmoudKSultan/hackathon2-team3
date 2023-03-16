@@ -78,7 +78,7 @@ export const ConfirmPayout = ({
         <OtpInput onOtpChange={otpChangeHandler} />
         <CountdownTimer targetDate={dateTimeAfterTwoMinutes} />
         <p>
-          Didn't get the code?
+          Did not get the code?
           <span className="text-blue-light cursor-pointer"> Resend</span>
         </p>
         <Button

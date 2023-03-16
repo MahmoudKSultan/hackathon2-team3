@@ -34,7 +34,7 @@ export const Dropdown = ({
 
         <Menu.Items className="absolute right-0 mt-1 w-full z-10 bg-white shadow-lg ring-1 ring-black ring-opacity-5 ">
           {data.map((item) => (
-            <div className="px-1 py-1 ">
+            <div className="px-1 py-1 " key={item.label}>
               <Menu.Item>
                 <button
                   className={` group flex w-full items-center rounded-md px-2 py-1 text-sm`}

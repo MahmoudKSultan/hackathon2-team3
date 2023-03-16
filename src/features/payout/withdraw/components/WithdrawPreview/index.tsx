@@ -4,7 +4,8 @@ import { MiniCard } from "../MiniCard";
 import { DeleteIcon, EditIcon } from "lib/@heroicons";
 import useFetch from "../../hook/useFetch";
 import { getCookie } from "lib/js-cookie";
-import { COOKIES_KEYS } from "data";
+import { API_SERVICES_URLS, COOKIES_KEYS } from "data";
+import { useSwrMutationFetch } from "hooks";
 
 export const WithdrawPreview = ({
   selectedBank,
@@ -17,21 +18,26 @@ export const WithdrawPreview = ({
 
   const { fetchData, isLoading, error } = useFetch();
 
+  const { trigger, isMutating } = useSwrMutationFetch(
+    API_SERVICES_URLS.FREELANCER.REQUEST_CASH,
+    {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+    }
+  );
+
   const handleConfirmWithdraw = async () => {
     const formData = {
       amount: selectedBalance,
-      bankId: selectedBank._id,
+      bankId: selectedBank?._id,
+      recipientId: recipient?._id,
+      officeId: office?._id,
     };
+    const data = await trigger(formData);
 
-    const options = {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${currentUser?.accessToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    };
-    console.log(options);
+    console.log(data);
 
     // const dataBank = await fetchData(options, `withdraw/request-bank`);
   };
@@ -98,7 +104,7 @@ export const WithdrawPreview = ({
         </div>
         <hr className="my-1 bg-gray-dark h-0.5 "></hr>
         <div className="flex justify-between">
-          <p>You'll get</p>
+          <p>You will get</p>
           <p>${selectedBalance}</p>
         </div>
       </MiniCard>

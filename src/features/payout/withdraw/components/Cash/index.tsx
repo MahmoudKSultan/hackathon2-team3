@@ -12,7 +12,7 @@ import { useSwrFetch, useModal } from "hooks";
 import { API_SERVICES_URLS } from "data";
 import { WithdrawPreview } from "./../WithdrawPreview/index";
 
-export default function Cash({ selectedBalance }: any) {
+export default function Cash() {
   const [selectedOffice, setSelectedOffice] = useState();
   const [recipients, setRecipients] = useState([]);
   const [selectedRecipient, setSelectedRecipient] = useState();
@@ -20,13 +20,14 @@ export default function Cash({ selectedBalance }: any) {
   const editModalObj = useModal();
   const previewWithdrawModal = useModal();
 
-  const { data, error: officesError, isLoading: isOfficeLoading } = useSwrFetch(
-    API_SERVICES_URLS.FREELANCER.OFFICE_LIST,
-    {
-      method: "GET",
-      headers: {},
-    }
-  );
+  const {
+    data,
+    error: officesError,
+    isLoading: isOfficeLoading,
+  } = useSwrFetch(API_SERVICES_URLS.FREELANCER.OFFICE_LIST, {
+    method: "GET",
+    headers: {},
+  });
 
   const {
     data: recipientsData,
@@ -114,7 +115,7 @@ export default function Cash({ selectedBalance }: any) {
             >
               <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg  focus:outline-none sm:text-sm z-50">
                 {recipientsData &&
-                  recipients?.map((recipient, idx) => {
+                  recipients.map((recipient, idx) => {
                     const isLast = recipients.length - 1 != idx;
                     return (
                       <RecipentOption
@@ -180,20 +181,11 @@ export default function Cash({ selectedBalance }: any) {
           />
         </TransferCard>
       </Modal>
-      <Modal {...previewWithdrawModal} className="!w-[700px] !px-28">
-        <TransferCard
-          centerTitle={false}
-          title="Preview Withdraw"
-          closeModal={previewWithdrawModal.closeModal}
-        >
-          <WithdrawPreview
-            modalObj={previewWithdrawModal}
-            recipient={selectedRecipient}
-            office={selectedOffice}
-            selectedBalance={selectedBalance}
-          />
-        </TransferCard>
-      </Modal>
+      <WithdrawPreview
+        modalObj={previewWithdrawModal}
+        recipient={selectedRecipient}
+        office={selectedOffice}
+      />
     </>
   );
 }

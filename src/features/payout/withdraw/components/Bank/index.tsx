@@ -1,4 +1,4 @@
-import { Button, Select, Input, Image } from "components";
+import { Button, Divider, Input, Image } from "components";
 import Modal from "components/Modal";
 import { TransferCard } from "../TransferCard";
 import useModal from "hooks/useModal";
@@ -9,7 +9,7 @@ import ListOfBanks from "../ListOfBanks";
 import WithdrawPreview from "../WithdrawPreview";
 import ModalAddBankAccount from "../ModalAddBankAccount";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { getCookie } from "lib/js-cookie";
 import { COOKIES_KEYS } from "data";
@@ -17,73 +17,46 @@ import axios from "axios";
 import { useSWR } from "lib/swr";
 import useFetch from "../../hook/useFetch";
 
-// type FormValues = {
-//   amount: string;
-// };
-// type BankValues = {
-//   accountName: string;
-//   accountNumber: string;
-//   bankBranch: string;
-//   ledger: string;
-// };
+import SelectList from "../SelectList";
+import { Listbox } from "@headlessui/react";
 
-export const Bank = () => {
-  const modalBank = useModal();
+export const Bank = ({ selectedBalance }: any) => {
+  const modalAddBank = useModal();
   const modalBankList = useModal();
   const modalWithdraw = useModal();
 
   const [amount, setAmount] = useState(0);
 
-  const [bankData, setBankData] = useState({
-    accountName: "",
-    accountNumber: "",
-    bankBranch: "",
-    ledger: "",
-  });
+  const currentUser = getCookie(COOKIES_KEYS.currentUser);
+  const [listofBanks, setListofBanks] = useState([]);
+
+  const [selectedBank, setSelectedBank] = useState();
 
   const { fetchData, isLoading, error } = useFetch();
 
-  const links = [
-    { href: "/account-settings", label: "Account settings" },
-    { href: "/support", label: "Support" },
-    { href: "/license", label: "License" },
-    { href: "/sign-out", label: "Sign out" },
-  ];
-
-  const handleInput = (e) => {
-    const formField = e.target.name;
-    setBankData({ ...bankData, [formField]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const formData = {
-      accountName: bankData.accountName,
-      accountNumber: bankData.accountNumber,
-      bankBranch: bankData.bankBranch,
-      ledger: bankData.ledger,
+  useEffect(() => {
+    const listOfBanks = async () => {
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${currentUser?.accessToken}`,
+          "Content-Type": "application/json",
+        },
+      };
+      const res = await fetchData(options, `bank/listing?offset=0&limit=10`);
+      setListofBanks(res.data.banks);
     };
-    console.log(formData);
+    listOfBanks();
 
-    // const currentUser = getCookie(COOKIES_KEYS.currentUser);
-    // const options = {
-    //   method: "POST",
-    //   headers: {
-    //     Authorization: `Bearer ${currentUser?.accessToken}`,
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(formData),
-    // };
-    // const data = await fetchData(options, `bank/send-code`);
-  };
-
-  console.log("test render bank");
+    // if (selectedBank) {
+    //   setSelectedBank(() => selectedBank.data.recipients[0]);
+    // }
+  }, []);
 
   return (
     <div>
-      <div className="mt-6">
-        <div className="w-60 m-auto">
+      <div className="mt-6  w-[611px] m-auto">
+        {/* <div className="w-60 m-auto">
           <div className="flex justify-between items-center ">
             <p className="font-semibold text-xl">Amount</p>
             <div className="flex gap-1">
@@ -114,9 +87,9 @@ export const Bank = () => {
             }
             onChange={(e) => setAmount(e.target.value)}
           />
-        </div>
+        </div> */}
         <div>
-          <div className="flex gap-2">
+          <div className="flex gap-3 items-center">
             <p className="text-xl font-semibold">Bank</p>
             <p
               className="text-blue-light cursor-pointer"
@@ -125,156 +98,33 @@ export const Bank = () => {
               Edit
             </p>
           </div>
-          {/* <Select
-            options={optionsStatus}
-            id="bank-select"
-            placeholder="Select a bank account"
-            selectSize="small"
-            className="flex-1 basis-full text-gray-dark font-semibold text-lg"
-            selectClassName="h-16"
-          /> */}
-          <Menu as="div" className="relative">
-            <div>
-              <Menu.Button className="inline-flex w-full justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-                Options
-                <ArrowDownIcon
-                  className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
-                  aria-hidden="true"
-                />
-              </Menu.Button>
-            </div>
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-100"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
-            >
-              <Menu.Items className="absolute right-0 mt-1 w-full origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <div className="px-1 py-1 ">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        className={`${
-                          active ? "bg-gray-light text-white" : "text-gray-900"
-                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                      >
-                        {/* {active ? (
-                          <EditActiveIcon
-                            className="mr-2 h-5 w-5"
-                            aria-hidden="true"
-                          />
-                        ) : (
-                          <EditInactiveIcon
-                            className="mr-2 h-5 w-5"
-                            aria-hidden="true"
-                          />
-                        )} */}
-                        Edit
-                      </button>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                      >
-                        {/* {active ? (
-                          <DuplicateActiveIcon
-                            className="mr-2 h-5 w-5"
-                            aria-hidden="true"
-                          />
-                        ) : (
-                          <DuplicateInactiveIcon
-                            className="mr-2 h-5 w-5"
-                            aria-hidden="true"
-                          />
-                        )} */}
-                        Duplicate
-                      </button>
-                    )}
-                  </Menu.Item>
-                </div>
-                <div className="px-1 py-1">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                      >
-                        {/* {active ? (
-                          <ArchiveActiveIcon
-                            className="mr-2 h-5 w-5"
-                            aria-hidden="true"
-                          />
-                        ) : (
-                          <ArchiveInactiveIcon
-                            className="mr-2 h-5 w-5"
-                            aria-hidden="true"
-                          />
-                        )} */}
-                        Archive
-                      </button>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                      >
-                        {/* {active ? (
-                          <MoveActiveIcon
-                            className="mr-2 h-5 w-5"
-                            aria-hidden="true"
-                          />
-                        ) : (
-                          <MoveInactiveIcon
-                            className="mr-2 h-5 w-5"
-                            aria-hidden="true"
-                          />
-                        )} */}
-                        Move
-                      </button>
-                    )}
-                  </Menu.Item>
-                </div>
-                <div className="px-1 py-1">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        className={`${
-                          active ? "bg-violet-500 text-white" : "text-gray-900"
-                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                      >
-                        {/* {active ? (
-                          <DeleteActiveIcon
-                            className="mr-2 h-5 w-5 text-violet-400"
-                            aria-hidden="true"
-                          />
-                        ) : (
-                          <DeleteInactiveIcon
-                            className="mr-2 h-5 w-5 text-violet-400"
-                            aria-hidden="true"
-                          />
-                        )} */}
-                        Delete
-                      </button>
-                    )}
-                  </Menu.Item>
-                </div>
-              </Menu.Items>
-            </Transition>
-          </Menu>
+
+          <SelectList
+            selected={selectedBank}
+            setSelected={setSelectedBank}
+            selectedOptionComp={
+              selectedBank ? () => <BankOption bank={selectedBank} /> : () => {}
+            }
+            dir="ltr"
+          >
+            <Listbox.Options className="absolute z-30 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              {listofBanks &&
+                listofBanks?.map((bank: any, index) => {
+                  const isLast = bank.length - 1 != index;
+                  return (
+                    <BankOption
+                      bank={bank}
+                      withDivider={isLast}
+                      key={bank._id}
+                    />
+                  );
+                })}
+            </Listbox.Options>
+          </SelectList>
+
           <p
             className="text-blue-light cursor-pointer flex flex-1 justify-end "
-            onClick={modalBank.openModal}
+            onClick={modalAddBank.openModal}
           >
             <PlusIcon className="w-5" />
             Add bank account
@@ -284,7 +134,7 @@ export const Bank = () => {
             type="button"
             buttonSize="small"
             fullWidth
-            className="text-2xl bg-blue-light mt-8"
+            className="text-2xl bg-blue-light mt-14"
             onClick={modalWithdraw.openModal}
           >
             Withdraw
@@ -292,18 +142,15 @@ export const Bank = () => {
         </div>
       </div>
       {/* Modal for edit bank account */}
-      <Modal {...modalBankList} className="!w-[700px] !px-28">
+      <Modal {...modalBankList} className="!w-[700px] !px-14">
         <TransferCard
           centerTitle={false}
           title="Bank Accounts"
           closeModal={modalBankList.closeModal}
         >
           <ListOfBanks
-            // register={register}
-            // onSubmit={onSubmit}
-            // setValue={setValue}
-            // bankData={data}
-            setBankData={setBankData}
+            setSelectedBank={setSelectedBank}
+            modalBankList={modalBankList}
           />
         </TransferCard>
       </Modal>
@@ -314,27 +161,42 @@ export const Bank = () => {
           title="Withdraw Preview"
           closeModal={modalWithdraw.closeModal}
         >
-          <WithdrawPreview />
-        </TransferCard>
-      </Modal>
-      {/* Modal for add bank account */}
-      <Modal {...modalBank} className="!w-[700px] !px-28">
-        <TransferCard
-          centerTitle={false}
-          title="Add Bank Account"
-          closeModal={modalBank.closeModal}
-        >
-          <ModalAddBankAccount
-            // data={data}
-            setBankData={setBankData}
-            handleInput={handleInput}
-            handleSubmit={handleSubmit}
-            // register={register}
-            // onSubmit={onSubmit}
+          <WithdrawPreview
+            selectedBank={selectedBank}
+            selectedBalance={selectedBalance}
           />
         </TransferCard>
       </Modal>
+      {/* Modal for add bank account */}
+      <Modal {...modalAddBank} className="!w-[700px] !px-24">
+        <TransferCard
+          centerTitle={false}
+          title="Add Bank Account"
+          closeModal={modalAddBank.closeModal}
+        >
+          <ModalAddBankAccount modalAddBank={modalAddBank} />
+        </TransferCard>
+      </Modal>
     </div>
+  );
+};
+
+const BankOption = ({ bank, withDivider }: any) => {
+  return (
+    <Listbox.Option
+      className={`relative cursor-pointer select-none pt-2 pl-6 pr-6 list-none`}
+      value={bank}
+    >
+      <div className={`block truncate`}>
+        <div className="flex mb-1">
+          <span className="font-bold">{bank.accountName}</span>
+        </div>
+        <div className="flex justify-between  text-sm text-gray-400">
+          <span>{bank.createdAt}</span>
+        </div>
+      </div>
+      {withDivider && <Divider />}
+    </Listbox.Option>
   );
 };
 export default Bank;

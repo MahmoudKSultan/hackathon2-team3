@@ -35,7 +35,7 @@ export const AddRecipient = ({ closeModal }) => {
 
   const onSubmit = (data) =>
     setValues({ idNumber: data.idNumber, mobile: data.mobile });
-  console.log(data);
+  // console.log(data);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

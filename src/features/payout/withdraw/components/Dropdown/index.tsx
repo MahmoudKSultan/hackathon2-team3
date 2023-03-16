@@ -6,12 +6,11 @@ export const Dropdown = ({
   data = [],
   disabled = false,
   label,
-  name,
   placeholder = "",
-  bankData,
-  setBankData = (f) => f,
+  // bankData,
+  // setBankData = (f) => f,
 }) => {
-  const [selected, setSelected] = useState({ label: "", value: "" });
+  const [selected, setSelected] = useState();
 
   console.log("test render");
 
@@ -41,7 +40,7 @@ export const Dropdown = ({
                   className={` group flex w-full items-center rounded-md px-2 py-1 text-sm`}
                   onClick={() => {
                     setSelected(item.label);
-                    setBankData({ ...bankData, [name]: item.value });
+                    // setBankData({ ...bankData, [name]: item.value });
                   }}
                   // {...register(name)}
                 >

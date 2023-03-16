@@ -10,7 +10,7 @@ export function MiniCard({
 }) {
   return (
     <div
-      className={`p-4 sm:px-7 border-[1px] border-gray-dark rounded-lg text-left ${className}`}
+      className={`p-4 sm:px-7 border-[1px] border-gray-dark rounded-lg text-left hover:bg-gray-light ${className}`}
     >
       {children}
     </div>

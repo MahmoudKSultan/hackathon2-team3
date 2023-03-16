@@ -8,78 +8,104 @@ import { COOKIES_KEYS } from "data";
 import { useSWR } from "lib/swr";
 
 import ModalAddBankAccount from "../ModalAddBankAccount";
+import ModalDelete from "../ModalDelete";
 import useModal from "hooks/useModal";
 import Modal from "components/Modal";
 import TransferCard from "../TransferCard";
 
 import useFetch from "../../hook/useFetch";
 
-export const ItemBank = ({ bank, bankData, setBankData }) => {
+export const ItemBank = ({
+  bank,
+  selectedItemBank,
+  setSelectedItemBank = (f) => f,
+}: any) => {
   const modalEditBank = useModal();
+  const modalDeleteBank = useModal();
+
   const [data, setData] = useState([]);
-  //   const getListOfBank = async (url: string) => {
-  //     const currentUser = getCookie(COOKIES_KEYS.currentUser);
-  //     const res = await axios.get(url, {
-  //       headers: {
-  //         Authorization: `Bearer ${currentUser?.accessToken}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     return res.data;
-  //   };
+  const currentUser = getCookie(COOKIES_KEYS.currentUser);
 
   const { fetchData, isLoading, error } = useFetch();
 
-  //   const { data, error, isLoading } = useSWR(
-  //     `https://talents-valley-backend.herokuapp.com/api/bank/${bank._id}`,
-  //     getListOfBank
-  //   );
-
   const handleEdit = async (id: any) => {
-    const currentUser = getCookie(COOKIES_KEYS.currentUser);
+    const formData = {
+      accountName: bank.accountName,
+      accountNumber: bank.accountNumber,
+      bankBranch: bank.bankBranch,
+      ledger: bank.ledger,
+      bankId: id,
+    };
+
+    console.log(formData);
+
     const options = {
       method: "GET",
       headers: {
         Authorization: `Bearer ${currentUser?.accessToken}`,
         "Content-Type": "application/json",
       },
+      body: JSON.stringify(fetchData),
     };
-    const data = await fetchData(options, `bank/details/${id}`);
-    setData(data.data);
+    // const data = await fetchData(options, `bank/send-code`);
+    // setData(data.data);
 
     // return data;
   };
 
+  // console.log(Object.keys(selectedItemBank));
+
   return (
-    <div className="">
-      <MiniCard className="">
+    <div
+      onClick={() => {
+        setSelectedItemBank(bank);
+      }}
+      className="cursor-pointer mt-2"
+    >
+      <MiniCard
+        className={`${
+          selectedItemBank._id === bank._id ? "border-blue-dark" : ""
+        }`}
+      >
         <div className="flex justify-between">
           <p className="font-semibold text-xl">{bank.accountName}</p>
           <div className="flex gap-3 ">
-            <DeleteIcon className="w-5 cursor-pointer" />
+            <DeleteIcon
+              className="w-5 cursor-pointer"
+              onClick={() => modalDeleteBank.openModal()}
+            />
             <EditIcon
               className="w-5 cursor-pointer"
               onClick={() => {
-                handleEdit(bank._id);
+                setSelectedItemBank(bank);
                 modalEditBank.openModal();
               }}
             />
           </div>
         </div>
         <div>
-          <p className="text-xl">{bank.accountNumber}</p>
+          <p className="text-xl">
+            {bank?.accountNumber}-001-{bank?.ledger}-000
+          </p>
         </div>
       </MiniCard>
 
       {/* Modal for edit bank account */}
-      <Modal {...modalEditBank} className="!w-[700px] !px-28">
+      <Modal {...modalEditBank} className="!w-[700px] !px-24">
         <TransferCard
           centerTitle={false}
           title="Add Bank Account"
           closeModal={modalEditBank.closeModal}
         >
-          <ModalAddBankAccount bankData={data} setBankData={setBankData} />
+          <ModalAddBankAccount
+            selectedItemBank={selectedItemBank}
+            modalEditBank={modalEditBank}
+          />
         </TransferCard>
+      </Modal>
+      {/* Modal for delete bank account */}
+      <Modal {...modalDeleteBank} className="!w-[700px] !px-24">
+        <ModalDelete bank={bank} modalDeleteBank={modalDeleteBank} />
       </Modal>
     </div>
   );

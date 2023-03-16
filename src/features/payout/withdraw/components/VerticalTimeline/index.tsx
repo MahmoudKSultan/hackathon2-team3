@@ -16,7 +16,7 @@ const VerticalTimelineFetcher = async (url: string) => {
   return res.data;
 };
 const VerticalTimeline = () => {
-  const withdrawId = "64121e087fb7075da8210797";
+  const withdrawId = "640f5cb778fd73b40d217e37";
   const { data, error, isLoading } = useSWR(
     `https://talents-valley-backend.herokuapp.com/api/withdraw/details/${withdrawId}`,
     VerticalTimelineFetcher
@@ -45,20 +45,23 @@ const VerticalTimeline = () => {
   } else {
     dateText = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   }
+
+ 
+
   return (
     <ol className="text-gray-500 border-gray-200 dark:border-gray-700 dark:text-gray-400 pt-4">
       {timelineData &&
         timelineData.map((item) => (
           <li
             key={item._id}
-            className="grid grid-cols-6 divide-x relative "
+            className="grid grid-cols-5 divide-x relative "
           >
             <div className=" flex flex-col pb-3">
               <div className="text-sm">{formattedTime} </div>
               <div className="text-sm">{dateText} </div>
 
             </div>
-            <span className="absolute w-3 h-3 ml-[15%] bg-blue-200 rounded-full dark:ring-gray-900 dark:bg-blue-900"></span>
+            <span className="absolute w-3 h-3 ml-[18%] bg-blue-200 rounded-full dark:ring-gray-900 dark:bg-blue-900"></span>
             <div className="font-medium pl-5 ">{item.status}</div>
           </li>
         ))}

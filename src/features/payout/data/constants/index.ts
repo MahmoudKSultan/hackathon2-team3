@@ -1,4 +1,4 @@
-import { Select } from 'components';
+
 export const columns = [
   // { id: "name", header: "Name", className:"pr-40" },
   // { id: "data", header: "Data" ,className:"" },
@@ -8,8 +8,8 @@ export const columns = [
 ];
 
 export const options = [
-  {id:"" , select:"All"},
-  {id:"pending" , select: "Pending"} 
+   {id:"all" , select: "All"}
+  ,{id:"pending" , select: "Pending"} 
   ,{id:"ready" ,select:"Ready"}
   ,{id:"sent" ,select:"Sent"}
   ,{id:"completed" ,select:"Completed"}

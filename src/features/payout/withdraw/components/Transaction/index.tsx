@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSWR } from "lib/swr";
 import { getCookie } from "lib/js-cookie";
 import { COOKIES_KEYS } from "data";
@@ -12,6 +12,7 @@ import {
   SearchIcon,
 } from "lib/@heroicons";
 import SelectCheckBox from "../SelectCheckBox";
+import { options } from "features/payout/data";
 
 const BalanceTransactionsFetcher = async (url: string) => {
   const currentUser = getCookie(COOKIES_KEYS.currentUser);
@@ -28,12 +29,12 @@ const BalanceTransactionsFetcher = async (url: string) => {
 const Transaction = ({ columns }) => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
-  const [selectedOption, setSelectedOption] = useState("pending");
+  const [selectedOptions, setSelectedOptions] = useState("pending");
   const [offset, setOffset] = useState(0);
   const [tranPersage, setTranPerPage] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
   const { data, error, isLoading } = useSWR(
-    `https://talents-valley-backend.herokuapp.com/api/withdraw/list?offset=${offset}&limit=${tranPersage}&sort=${sort}&filter=${selectedOption}&search=${search}`,
+    `https://talents-valley-backend.herokuapp.com/api/withdraw/list?offset=${offset}&limit=${tranPersage}&sort=${sort}&filter=${selectedOptions}&search=${search}`,
     BalanceTransactionsFetcher
   );
 
@@ -46,8 +47,13 @@ const Transaction = ({ columns }) => {
     setCurrentPage(currentPage - 1);
   };
 
+
+
+
+
   return (
     <>
+      {isLoading && <div>Loading</div>}
       <p className="my-2 font-[600] text-[#8C8C8C] text-lg">Transactions</p>
       <div className="flex flex-row justify-between align-center -mb-4">
         <Input
@@ -63,8 +69,8 @@ const Transaction = ({ columns }) => {
             <span>Withdraw</span>
           </Button>
           <SelectCheckBox
-            selectedOption={selectedOption}
-            setSelectedOption={setSelectedOption}
+            selectedOptions={selectedOptions}  
+            setSelectedOptions={setSelectedOptions}
           />
         </div>
       </div>
@@ -219,7 +225,7 @@ const Transaction = ({ columns }) => {
               )}
             <tr>
               <td></td>
-              <td className=" text-[#9E9E9E] flex content-center justify-end">
+              <td className=" text-[#9E9E9E] flex content-center  ">
                 <IconButton>
                   <ArrowLeft
                     className="text-[#9E9E9E]"

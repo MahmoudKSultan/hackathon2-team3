@@ -5,17 +5,30 @@ import React, { useState } from "react";
 
 
 
-export const SelectCheckBox = ({selectedOption,setSelectedOption}) => {
+export const SelectCheckBox = ({selectedOptions,setSelectedOptions}) => {
   const [isOpen, setIsOpen] = useState(false);
-  // const [selectedOption, setSelectedOption] = useState("");
+  // const [selectedOptions, setSelectedOptions] = useState([]);
 
   const toggling = () => setIsOpen(!isOpen);
 
   const onOptionClicked = (value: string) => () => {
-    setSelectedOption(value);
-    console.log(selectedOption);
+    setSelectedOptions(value);
+    console.log(selectedOptions);
   };
 
+  // function handle(event) {
+  //   const { value, checked } = event.target;
+  //   if (checked === true) {
+  //     setSelectedOptions(pre => [...pre, value]);
+  //   } else {
+  //     setSelectedOptions(pre => pre.filter(status => status !== value));
+  //   }
+  
+  //  }
+  
+ 
+  
+ console.log(selectedOptions)
   return (
     <div className="relative">
       <Button
@@ -29,12 +42,12 @@ export const SelectCheckBox = ({selectedOption,setSelectedOption}) => {
       {isOpen && (
         <div className="mt-1 absolute right-0 shadow-md border">
             {options.map((option) => (
-              <div key={option.id} className="bg-white flex p-2" >
-              <input type="checkbox" className="mr-5 mt-1 ml-2"   onChange={onOptionClicked(option.id)} />
+              <form key={option.id} className="bg-white flex p-2"   >
+              <input type="checkbox" className="mr-5 mt-1 ml-2" value={option.id}  onChange={onOptionClicked(option.id)} />
               <label>
                 {option.select}
               </label>
-              </div>
+              </form>
             ))}
         </div>
       )}

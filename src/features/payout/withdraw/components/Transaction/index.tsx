@@ -5,7 +5,7 @@ import { COOKIES_KEYS } from "data";
 import axios from "lib/axios";
 import { Button, IconButton, Input } from "components";
 import {
-  ArrowDoewnIcon,
+  ArrowDownIcon,
   ArrowLeft,
   ArrowRight,
   ChevronIcon,
@@ -47,10 +47,6 @@ const Transaction = ({ columns }) => {
     setCurrentPage(currentPage - 1);
   };
 
-
-
-
-
   return (
     <>
       {isLoading && <div>Loading</div>}
@@ -65,11 +61,11 @@ const Transaction = ({ columns }) => {
         />
         <div className="flex justify-between  ">
           <Button className="flex flex-row h-12 mr-10 bg-white text-[#4375FF] hover:bg-slate-50">
-            <ArrowDoewnIcon className="h-5 w-5 mr-1 " />
+            <ArrowDownIcon className="h-5 w-5 mr-1 " />
             <span>Withdraw</span>
           </Button>
           <SelectCheckBox
-            selectedOptions={selectedOptions}  
+            selectedOptions={selectedOptions}
             setSelectedOptions={setSelectedOptions}
           />
         </div>

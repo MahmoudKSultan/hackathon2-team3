@@ -21,9 +21,9 @@ export const WithdrawPreview = ({ modalObj, recipient, office }) => {
           <MiniCard className="flex items-center justify-end mb-3 text-right gap-4">
             <div className="desc">
               <p className="text-sm text-blue-light">
-                {office.name} - {recipient.name}
+                {office?.name} - {recipient?.name}
               </p>
-              <p className="text-sm text-black">{office.address}</p>
+              <p className="text-sm text-black">{office?.address}</p>
             </div>
             <Image
               src="/assets/img/bank.png"
@@ -34,12 +34,16 @@ export const WithdrawPreview = ({ modalObj, recipient, office }) => {
           </MiniCard>
           <MiniCard className="text-black text-sm mb-3">
             <div className="flex justify-between items-center ">
+              <p>Recipient Name</p>
+              <p>{recipient?.name}</p>
+            </div>
+            <div className="flex justify-between items-center ">
               <p>Transfer amount</p>
               <p>$300</p>
             </div>
             <div className="flex justify-between items-center ">
               <p>Fee</p>
-              <p>{office.fees == 0 ? office.fees : "Free"}</p>
+              <p>{office?.fees == 0 ? "No Fees" : office?.fees}</p>
             </div>
             <Divider />
             <div className="flex justify-between items-center ">

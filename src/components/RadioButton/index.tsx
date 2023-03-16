@@ -7,14 +7,16 @@ export function RadioButton({
   children,
   label,
   className,
+  disabled,
 }) {
-  const isSelected = selected == label;
+  const isSelected = selected.toLowerCase() == label.toLowerCase();
   return (
     <RadioGroup.Option
       className={`border-2 relative flex px-4 py-3 ${
         isSelected ? "border-[#4375FF]" : ""
       } cursor-pointer rounded-lg focus:outline-none ${className}`}
       onClick={handleChange}
+      disabled={disabled}
     >
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center gap-3">

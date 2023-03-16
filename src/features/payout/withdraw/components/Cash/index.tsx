@@ -141,7 +141,7 @@ export default function Cash() {
             size={"medium"}
             onClick={previewWithdrawModal.openModal}
           >
-            Confirm
+            Withdraw
           </Button>
         </div>
       </div>

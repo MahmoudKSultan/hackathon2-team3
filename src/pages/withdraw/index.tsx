@@ -1,12 +1,12 @@
 import type { NextPageWithLayout } from "types";
 import NestedLayout from "layouts/NestedLayout";
 import { BalanceCard, MainSide } from "layouts/NestedLayout/components";
-import { WrapBalance } from "features/payout";
+import { WithdrawWrapper } from "features/payout";
 
 const Withdraw: NextPageWithLayout = () => {
     return (
         <NestedLayout left={MainSide} right={BalanceCard} >
-            <WrapBalance />
+            <WithdrawWrapper />
         </NestedLayout>
     );
 };

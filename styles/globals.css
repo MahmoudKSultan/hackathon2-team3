@@ -7,3 +7,6 @@
     @apply bg-gray-light;
   }
 }
+body {
+  height: 5000px;
+}

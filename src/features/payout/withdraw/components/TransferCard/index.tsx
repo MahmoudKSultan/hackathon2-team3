@@ -1,4 +1,4 @@
-import { Card, IconButton } from "components";
+import { IconButton } from "components";
 import { XMarkIconMini } from "lib/@heroicons";
 import { Children } from "types";
 
@@ -16,23 +16,25 @@ export function TransferCard({
   closeModal?: any;
 }) {
   return (
-    <div className="">
-      {/* x icon */}
-      <IconButton
-        className="absolute top-3 right-2  "
-        buttonSize="large"
-        onClick={closeModal}
-      >
-        {" "}
-        <XMarkIconMini />
-      </IconButton>
-      <h2
-        className={`font-bold text-lg mb-5 text-${
-          centerTitle ? "center" : "left"
-        }`}
-      >
-        {title}
-      </h2>
+    <div className="relative">
+      <div className="">
+        {/* x icon */}
+        <IconButton
+          className="absolute right-0"
+          buttonSize="large"
+          onClick={closeModal}
+        >
+          <XMarkIconMini />
+        </IconButton>
+        <h2
+          className={`font-bold text-lg mb-5 text-${
+            centerTitle ? "center" : "left"
+          }`}
+        >
+          {title}
+        </h2>
+      </div>
+
       {children}
     </div>
   );

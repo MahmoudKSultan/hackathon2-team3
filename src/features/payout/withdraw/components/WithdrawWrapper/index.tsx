@@ -24,7 +24,6 @@ export const WithdrawWrapper = () => {
     if (data) {
       setLastWithdraw(data.data);
       // setSelected(data);
-
       setSelected(data.data.withdraw.typeWithdraw.toUpperCase());
     }
   }, [data]);
@@ -34,6 +33,7 @@ export const WithdrawWrapper = () => {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm();
 
@@ -139,7 +139,12 @@ export const WithdrawWrapper = () => {
             </div>
           </div>
           <div className="flex justify-center items-center"></div>
-          {selected === "CASH" ? <Cash /> : <Bank />}
+          {/* {selected === "CASH" ? <Cash /> : <Bank />} */}
+          {selected === "CASH" ? (
+            <Cash selectedBalance={amount} />
+          ) : (
+            <Bank selectedBalance={amount} />
+          )}
         </form>
       </Card>
     </>

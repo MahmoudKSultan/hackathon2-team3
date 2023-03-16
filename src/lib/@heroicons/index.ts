@@ -8,10 +8,11 @@ import {
   XMarkIcon as XMarkIconMini,
   InformationCircleIcon as InformationCircleIconMini,
   CheckIcon as CheckIconMini,
+  ChevronDownIcon as ChevronDownIconMini,
 } from "@heroicons/react/20/solid";
 import {
   InformationCircleIcon,
-  HomeIcon as HomeIcon,
+  HomeIcon,
   QuestionMarkCircleIcon as HelpIcon,
   PhoneIcon,
   ClipboardDocumentListIcon as InvoiceIcon,
@@ -52,4 +53,5 @@ export {
   BankIcon,
   ArrowDownIcon,
   PlusIcon,
+  ChevronDownIconMini,
 };

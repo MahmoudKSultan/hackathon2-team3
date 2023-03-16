@@ -2,77 +2,125 @@ import { Image, Button, Divider, Modal } from "components";
 import { useState } from "react";
 import { MiniCard } from "../MiniCard";
 import { DeleteIcon, EditIcon } from "lib/@heroicons";
-import { TransferCard } from "features/payout";
+import useFetch from "../../hook/useFetch";
+import { getCookie } from "lib/js-cookie";
+import { COOKIES_KEYS } from "data";
 
-export const WithdrawPreview = ({ modalObj, recipient, office }) => {
+export const WithdrawPreview = ({
+  selectedBank,
+  selectedBalance,
+  recipient,
+  office,
+  dir = "rtl",
+}: any) => {
+  const currentUser = getCookie(COOKIES_KEYS.currentUser);
+
+  const { fetchData, isLoading, error } = useFetch();
+
+  const handleConfirmWithdraw = async () => {
+    const formData = {
+      amount: selectedBalance,
+      bankId: selectedBank._id,
+    };
+
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${currentUser?.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    };
+    console.log(options);
+
+    // const dataBank = await fetchData(options, `withdraw/request-bank`);
+  };
+
   return (
-    <Modal {...modalObj}>
-      <TransferCard
-        centerTitle={true}
-        title="Transfer Preview"
-        closeModal={modalObj.closeModal}
+    <div className="flex flex-col gap-4 justify-center">
+      <div className="flex flex-col items-center">
+        <p className=" text-gray-dark">Amount:</p>
+        <p className="text-blue-light text-4xl font-semibold">
+          {selectedBalance} USD
+        </p>
+      </div>
+      <div>
+        <p>Transferred to:</p>
+        <MiniCard>
+          <div>
+            {dir == "ltr" && selectedBank ? (
+              <div className="flex gap-4" dir={dir}>
+                <Image
+                  src="/assets/img/bank.png"
+                  alt="bankd image"
+                  width={35}
+                  height={35}
+                />
+                <div>
+                  <p>
+                    {selectedBank?.bankName} - {selectedBank?.accountName}
+                  </p>
+                  <p>
+                    {selectedBank?.accountNumber}-001-{selectedBank?.ledger}-000
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="flex text-right gap-4" dir={dir}>
+                <Image
+                  src="/assets/img/bank.png"
+                  alt="bankd image"
+                  width={35}
+                  height={35}
+                />
+                <div>
+                  <p>{office?.name}</p>
+                  <p>{office?.address}</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </MiniCard>
+      </div>
+
+      <MiniCard>
+        <div className="flex justify-between">
+          <div>
+            {recipient && <p>Recipient name</p>}
+            <p>Transfer amount</p>
+            <p>Fee</p>
+          </div>
+          <div>
+            {recipient && <p>{recipient.name}</p>}
+            <p>${selectedBalance}</p>
+            <p>Free</p>
+          </div>
+        </div>
+        <hr className="my-1 bg-gray-dark h-0.5 "></hr>
+        <div className="flex justify-between">
+          <p>You'll get</p>
+          <p>${selectedBalance}</p>
+        </div>
+      </MiniCard>
+      <ul className="space-y-1 list-disc list-inside p-4">
+        <li>Estimated arrival: 2 business days.</li>
+        <li>Transfers made after 9:00 PM or on weekends takes longer.</li>
+        <li>
+          All transfers are subject to review and could be delayed or stopped if
+          we identify an issue.
+        </li>
+      </ul>
+
+      <Button
+        type="submit"
+        buttonSize="small"
+        fullWidth
+        className="text-2xl bg-blue-light"
+        onClick={handleConfirmWithdraw}
       >
-        <div className="text-center mb-5">
-          <p className="text-sm font-bold text-[#8C8C8C]">Amount</p>
-          <h2 className="font-bold text-3xl text-[#4375FF]">240.00 USD</h2>
-        </div>
-        <div>
-          <p className="text-sm text-[#8C8C8C] mb-2">Transferred to:</p>
-          <MiniCard className="flex items-center justify-end mb-3 text-right gap-4">
-            <div className="desc">
-              <p className="text-sm text-blue-light">
-                {office?.name} - {recipient?.name}
-              </p>
-              <p className="text-sm text-black">{office?.address}</p>
-            </div>
-            <Image
-              src="/assets/img/bank.png"
-              alt="bankd image"
-              width={35}
-              height={35}
-            />
-          </MiniCard>
-          <MiniCard className="text-black text-sm mb-3">
-            <div className="flex justify-between items-center ">
-              <p>Recipient Name</p>
-              <p>{recipient?.name}</p>
-            </div>
-            <div className="flex justify-between items-center ">
-              <p>Transfer amount</p>
-              <p>$300</p>
-            </div>
-            <div className="flex justify-between items-center ">
-              <p>Fee</p>
-              <p>{office?.fees == 0 ? "No Fees" : office?.fees}</p>
-            </div>
-            <Divider />
-            <div className="flex justify-between items-center ">
-              <p>You'll get</p>
-              <p>$300</p>
-            </div>
-          </MiniCard>
-          {/* list of advises */}
-          <ul className="text-sm mb-10 px-7">
-            <li className='mb-2 before:content-["-"] -indent-1.5'>
-              {" "}
-              Estimated arrival: 2 business days.
-            </li>
-            <li className='mb-2 before:content-["-"] -indent-1.5'>
-              {" "}
-              Transfers made after 9:00 PM or on weekends takes longer.
-            </li>
-            <li className='mb-2 before:content-["-"] -indent-1.5'>
-              {" "}
-              All transfers are subject to review and could be delayed or
-              stopped if we identify an issue.
-            </li>
-          </ul>
-          <Button fullWidth={true} onClick={modalObj.closeModal}>
-            Confirm
-          </Button>
-        </div>
-      </TransferCard>
-    </Modal>
+        Confirm
+      </Button>
+    </div>
   );
 };
 export default WithdrawPreview;

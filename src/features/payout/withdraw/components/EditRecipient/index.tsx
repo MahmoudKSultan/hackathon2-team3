@@ -82,15 +82,15 @@ export const EditRecipient = ({ closeModal, handleRecipientAdd }) => {
           closeModal={verifyModal.closeModal}
         >
           <ConfirmPayout
-            sendCode={useSwrMutationFetch(
-              API_SERVICES_URLS.FREELANCER.RECIPIENT_CREATE_AFTER_CODE,
-              {
-                method: "POST",
-                headers: {
-                  "content-type": "application/json",
-                },
-              }
-            )}
+            // sendCode={useSwrMutationFetch(
+            //   API_SERVICES_URLS.FREELANCER.RECIPIENT_CREATE_AFTER_CODE,
+            //   {
+            //     method: "POST",
+            //     headers: {
+            //       "content-type": "application/json",
+            //     },
+            //   }
+            // )}
             data={values}
             closeModal={verifyModal.closeModal}
             // handleRecipientAdd={handleRecipientAdd}

@@ -1,33 +1,67 @@
 import { Image, Button, OtpInput, HelperText } from "components";
+import { COOKIES_KEYS } from "data";
+import { getCookie } from "lib/js-cookie";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import useFetch from "../../hook/useFetch";
+import CountdownTimer from "../CountdownTimer";
 
 export const ConfirmPayout = ({
-  sendCode: { trigger, isMutating },
   data,
-  closeModal,
-  handleRecipientAdd,
-}) => {
+  modalVerifyCode,
+  modalAddBank,
+  selectedItemBank,
+}: any) => {
   const [otpCode, setOtpCode] = useState("");
   const otpChangeHandler = (value: string) => setOtpCode(value);
-  const [error, setError] = useState("");
 
-  const onSubmit = (e) => {
+  const { fetchData, isLoading, error } = useFetch();
+  const currentUser = getCookie(COOKIES_KEYS.currentUser);
+
+  // CountdownTimer
+  const TWO_MIN = 120 * 1000;
+  const NOW_IN_MS = new Date().getTime();
+  const dateTimeAfterTwoMinutes = NOW_IN_MS + TWO_MIN;
+
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    verify();
-  };
-  const verify = async () => {
-    const newResponse = await trigger({ ...data, code: otpCode });
-    if (newResponse.status == "failed") {
-      setError(newResponse.message);
-      return;
-    }
-    handleRecipientAdd({ ...data, _id: newResponse.data._id });
-    closeModal();
+
+    const options = {
+      method: `${selectedItemBank?._id ? "PUT" : "POST"}`,
+      headers: {
+        Authorization: `Bearer ${currentUser?.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: selectedItemBank
+        ? JSON.stringify({
+            ...data,
+            code: otpCode,
+          })
+        : JSON.stringify({
+            ...data,
+            code: otpCode,
+            bankName: "Bank of Palesine",
+          }),
+    };
+    // console.log({
+    //   ...data,
+    //   code: otpCode,
+    //   bankName: "Bank of Palesine",
+    // });
+    data.idNumber
+      ? await fetchData(options, "recipient/create")
+      : await fetchData(
+          options,
+          `${
+            selectedItemBank?._id
+              ? `bank/edit/${selectedItemBank?._id}`
+              : "bank/add"
+          }`
+        );
+    console.log(data);
   };
 
   return (
-    <div className="flex flex-col gap-8 items-center">
+    <div className="flex flex-col gap-8  items-center">
       <Image
         src="/assets/img/smartphone.svg"
         width={40}
@@ -37,23 +71,26 @@ export const ConfirmPayout = ({
       <p className="w-[280px]">
         We have sent you a verification code to your phone number ********789
       </p>
-      <form onSubmit={onSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        className="text-center w-full flex flex-col gap-5"
+      >
         <OtpInput onOtpChange={otpChangeHandler} />
-        <p className="text-center my-5">02:00</p>
-        <p className="text-center mb-8">
+        <CountdownTimer targetDate={dateTimeAfterTwoMinutes} />
+        <p>
           Didn't get the code?
-          <span className="text-blue-light cursor-pointer" onClick={verify}>
-            {" "}
-            Resend
-          </span>
+          <span className="text-blue-light cursor-pointer"> Resend</span>
         </p>
         <Button
           type="submit"
           buttonSize="small"
           fullWidth
-          // className="text-2xl bg-blue-light "
+          onClick={() => {
+            modalVerifyCode.closeModal();
+            // modalAddBank.closeModal();
+          }}
         >
-          {isMutating ? "Loading..." : "Continue"}
+          Continue
         </Button>
         {error && (
           <HelperText

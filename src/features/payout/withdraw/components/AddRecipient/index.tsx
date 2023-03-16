@@ -26,13 +26,13 @@ export const AddRecipient = ({ closeModal, handleRecipientAdd }) => {
       },
     }
   );
-  const verifyModal = useModal();
+  const modalVerifyCode = useModal();
 
   const onSubmit = (data) => {
     trigger(data).then((a) => {
       console.log(a);
       reset();
-      verifyModal.openModal();
+      modalVerifyCode.openModal();
       // closeModal();
       setValues({ ...data });
     });
@@ -80,25 +80,27 @@ export const AddRecipient = ({ closeModal, handleRecipientAdd }) => {
           {/* <p className="text-xs text-center text-red">{error && error}</p> */}
         </div>
       </form>
-      <Modal {...verifyModal}>
+      <Modal {...modalVerifyCode}>
         <TransferCard
           title="We need to make sure its you!"
           centerTitle={true}
-          closeModal={verifyModal.closeModal}
+          closeModal={modalVerifyCode.closeModal}
         >
           <ConfirmPayout
-            sendCode={useSwrMutationFetch(
-              API_SERVICES_URLS.FREELANCER.RECIPIENT_CREATE_AFTER_CODE,
-              {
-                method: "POST",
-                headers: {
-                  "content-type": "application/json",
-                },
-              }
-            )}
+            // sendCode={useSwrMutationFetch(
+            //   API_SERVICES_URLS.FREELANCER.RECIPIENT_CREATE_AFTER_CODE,
+            //   {
+            //     method: "POST",
+            //     headers: {
+            //       "content-type": "application/json",
+            //     },
+            //   }
+            // )}
             data={values}
-            closeModal={verifyModal.closeModal}
-            handleRecipientAdd={handleRecipientAdd}
+            // closeModal={modalVerifyCode.closeModal}
+            modalVerifyCode={modalVerifyCode}
+            // selectedItemBank={selectedItemBank}
+            // handleRecipientAdd={handleRecipientAdd}
           />
         </TransferCard>
       </Modal>

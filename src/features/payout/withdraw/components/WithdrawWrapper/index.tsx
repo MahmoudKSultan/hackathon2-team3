@@ -14,6 +14,7 @@ export const WithdrawWrapper = () => {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm();
 
@@ -114,7 +115,11 @@ export const WithdrawWrapper = () => {
             </div>
           </div>
           <div className="flex justify-center items-center"></div>
-          {selected === "Cash" ? <Cash /> : <Bank />}
+          {selected === "Cash" ? (
+            <Cash selectedBalance={amount} />
+          ) : (
+            <Bank selectedBalance={amount} />
+          )}
         </form>
       </Card>
     </>

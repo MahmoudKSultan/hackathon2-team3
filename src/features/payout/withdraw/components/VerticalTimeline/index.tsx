@@ -16,7 +16,7 @@ const VerticalTimelineFetcher = async (url: string) => {
   return res.data;
 };
 const VerticalTimeline = () => {
-  const withdrawId = "640f5cb778fd73b40d217e37";
+  const withdrawId = "640f5ceb78fd73b40d217e72";
   const { data, error, isLoading } = useSWR(
     `https://talents-valley-backend.herokuapp.com/api/withdraw/details/${withdrawId}`,
     VerticalTimelineFetcher

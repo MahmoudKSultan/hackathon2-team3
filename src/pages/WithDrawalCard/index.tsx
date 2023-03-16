@@ -24,24 +24,25 @@ const WithdrawalFetcher = async (url: string) => {
 //cash 640f5cb778fd73b40d217e37 /640f5ceb78fd73b40d217e72
 //64121c5b7fb7075da8210629
 const Withdrawal = () => {
-  const withdrawId = "640f5cb778fd73b40d217e37";
+  const withdrawId = "640f5ceb78fd73b40d217e72";
   const { data, error, isLoading } = useSWR(
     `https://talents-valley-backend.herokuapp.com/api/withdraw/details/${withdrawId}`,
     WithdrawalFetcher
   );
   console.log(data?.data.withdraw.typeWithdraw);
   const typeWithdraw = data?.data.withdraw.typeWithdraw;
+  const withdraw =data?.data.withdraw
   let status = data?.data.withdraw.status;
   let colorClass;
 
   if (status === "pending") {
     colorClass = "bg-[#FFF9F0] text-[#DAA545]";
-  } else if (status === "sent") {
+  } else if (status === "sent" || status === "ready") {
     colorClass = "bg-[#F4F7FD] text-[#4375FF]";
-  } else {
+  } else if (status === "completed" || status === "cancelled") {
     colorClass = "bg-[#EFEFEF]";
   }
-
+  // if (status === "completed" || "cancelled")
   return (
     <div className="bg-[#F2F4F7] w-[30%] shadow-md h-full top-12 fixed  ">
       <div className="relative p-8 ">
@@ -56,13 +57,17 @@ const Withdrawal = () => {
             ${data?.data.withdraw.amount}
           </p>
           <div>
-            <span className={`rounded-lg px-2 pb-1 ${colorClass}`}>
-              {status === "pending"
-                ? "Pending"
-                : status === "sent"
-                ? "Sent"
-                : "completed"}
-            </span>
+          <span className={`rounded-lg px-2 pb-1 ${colorClass}`}>
+      {status === "pending"
+        ? "Pending"
+        : status === "sent"
+        ? "Sent"
+        : status === "completed"
+        ? "Completed"
+        : status === "cancelled"
+        ? "Cancelled"
+        : null}
+    </span>
           </div>
         </div>
         <div className="border divide-[#707070] " />
@@ -70,16 +75,16 @@ const Withdrawal = () => {
           {typeWithdraw === "bank" ? (
             <div>
               <p className="font-bold text-sm pt-2 ">
-                {data?.data.withdraw.bank.bankName}
+                {withdraw?.bankName}
               </p>
               <p className="text-[#8C8C8C] text-sm pt-1 ">
-                {data?.data.withdraw.bank.accountNumber}
+                {withdraw?.accountNumber}
               </p>
             </div>
           ) : (
             <div>
               <p className="font-bold text-sm pt-2 ">
-                {data?.data.withdraw.office.name}
+                {withdraw?.office.name}
               </p>
             </div>
           )}
@@ -115,11 +120,11 @@ const Withdrawal = () => {
           <p className="text-[#8C8C8C] text-sm ">Bank Account Name</p>
           {typeWithdraw === "bank" ? (
             <span className=" text-sm">
-              {data?.data.withdraw.bank.accountName}
+              {withdraw?.accountName}
             </span>
           ) : (
             <span className=" text-sm">
-              {data?.data.withdraw.recipient.name}
+              {withdraw?.recipient.name}
             </span>
           )}
         </div>
@@ -154,7 +159,7 @@ const Withdrawal = () => {
           <div className="pt-4">
             <li>
               <span className="text-[#000000] text-sm ">
-                Address: {data?.data.withdraw.office.address}
+                Address: {withdraw?.office.address}
               </span>
             </li>
 
@@ -175,7 +180,7 @@ const Withdrawal = () => {
             </li>
             <li>
               <span className="text-[#000000] text-sm ">
-                Office fees {data?.data.withdraw.office.fees}{" "}
+                Office fees {withdraw?.office.fees}{" "}
               </span>
             </li>
           </div>

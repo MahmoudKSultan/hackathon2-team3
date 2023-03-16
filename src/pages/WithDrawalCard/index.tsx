@@ -9,8 +9,11 @@ import { COOKIES_KEYS } from "data";
 import axios from "axios";
 import VerticalTimeline from "features/payout/withdraw/components/VerticalTimeline";
 
+
+
+const currentUser = getCookie(COOKIES_KEYS.currentUser);
+
 const WithdrawalFetcher = async (url: string) => {
-  const currentUser = getCookie(COOKIES_KEYS.currentUser);
   console.log(currentUser);
   const res = await axios.get(url, {
     headers: {
@@ -20,9 +23,7 @@ const WithdrawalFetcher = async (url: string) => {
   });
   return res.data;
 };
-//bank 6410cb6387086b00f03d5f3f
-//cash 640f5cb778fd73b40d217e37 /640f5ceb78fd73b40d217e72
-//64121c5b7fb7075da8210629
+
 const Withdrawal = () => {
   const withdrawId = "640f5ceb78fd73b40d217e72";
   const { data, error, isLoading } = useSWR(
@@ -30,8 +31,11 @@ const Withdrawal = () => {
     WithdrawalFetcher
   );
   console.log(data?.data.withdraw.typeWithdraw);
+
+
+
   const typeWithdraw = data?.data.withdraw.typeWithdraw;
-  const withdraw =data?.data.withdraw
+  const withdraw = data?.data.withdraw;
   let status = data?.data.withdraw.status;
   let colorClass;
 
@@ -42,7 +46,20 @@ const Withdrawal = () => {
   } else if (status === "completed" || status === "cancelled") {
     colorClass = "bg-[#EFEFEF]";
   }
-  // if (status === "completed" || "cancelled")
+
+  let buttonText;
+  let Cancel
+  if (status === "pending") {
+    buttonText = "Cancel Withdrawal";
+  } else if (status === "sent" || status === "ready") {
+    buttonText = "Confirm Receipt";
+    if (status === "ready") {
+      Cancel = "Cancel Withdrawal";
+    }
+  } else if (status === "completed" || status === "cancelled") {
+    buttonText = "Report a Problem";
+  }
+
   return (
     <div className="bg-[#F2F4F7] w-[30%] shadow-md h-full top-12 fixed  ">
       <div className="relative p-8 ">
@@ -57,35 +74,31 @@ const Withdrawal = () => {
             ${data?.data.withdraw.amount}
           </p>
           <div>
-          <span className={`rounded-lg px-2 pb-1 ${colorClass}`}>
-      {status === "pending"
-        ? "Pending"
-        : status === "sent"
-        ? "Sent"
-        : status === "completed"
-        ? "Completed"
-        : status === "cancelled"
-        ? "Cancelled"
-        : null}
-    </span>
+            <span className={`rounded-lg px-2 pb-1 ${colorClass}`}>
+              {status === "pending"
+                ? "Pending"
+                : status === "sent"
+                ? "Sent"
+                : status === "completed"
+                ? "Completed"
+                : status === "cancelled"
+                ? "Cancelled"
+                : null}
+            </span>
           </div>
         </div>
         <div className="border divide-[#707070] " />
         <div className="flex justify-between  ">
           {typeWithdraw === "bank" ? (
             <div>
-              <p className="font-bold text-sm pt-2 ">
-                {withdraw?.bankName}
-              </p>
+              <p className="font-bold text-sm pt-2 ">{withdraw?.bankName}</p>
               <p className="text-[#8C8C8C] text-sm pt-1 ">
                 {withdraw?.accountNumber}
               </p>
             </div>
           ) : (
             <div>
-              <p className="font-bold text-sm pt-2 ">
-                {withdraw?.office.name}
-              </p>
+              <p className="font-bold text-sm pt-2 ">{withdraw?.office.name}</p>
             </div>
           )}
 
@@ -119,13 +132,9 @@ const Withdrawal = () => {
         <div className="flex justify-between">
           <p className="text-[#8C8C8C] text-sm ">Bank Account Name</p>
           {typeWithdraw === "bank" ? (
-            <span className=" text-sm">
-              {withdraw?.accountName}
-            </span>
+            <span className=" text-sm">{withdraw?.accountName}</span>
           ) : (
-            <span className=" text-sm">
-              {withdraw?.recipient.name}
-            </span>
+            <span className=" text-sm">{withdraw?.recipient.name}</span>
           )}
         </div>
 

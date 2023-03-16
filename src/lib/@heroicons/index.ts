@@ -56,7 +56,6 @@ export {
   BurgerIcon,
   DeleteIcon,
   EditIcon,
-  BankIcon,
   SearchIcon,
   ChevronIcon,
   BarsIcon,
@@ -64,6 +63,7 @@ export {
   ArrowLeft,
   ArrowDownIcon,
   PlusIcon,
+  BankIcon,
   ChevronDownIconMini,
   Point,
 };

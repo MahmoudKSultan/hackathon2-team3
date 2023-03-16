@@ -26,6 +26,8 @@ export const API_SERVICES_URLS = {
     RECIPIENT_DELETE: (recipientId) => `/recipient/delete/${recipientId}`,
     RECIPIENT_EDIT_BEFORE_CODE: (recipientId) =>
       `/recipient/edit/${recipientId}`,
+    LAST_WITHDRAW: "/withdraw/last-request",
+    REQUEST_CASH: `/withdraw/request-cash`,
     // BANK_WITHDRAW: (bankid: string, )
   },
 } as const;

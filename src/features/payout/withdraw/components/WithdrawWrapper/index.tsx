@@ -1,15 +1,31 @@
 import { Card, Input, RadioButton } from "components";
 import { BankIcon } from "lib/@heroicons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cash from "../Cash";
 import Bank from "../Bank";
 import { RadioGroup } from "@headlessui/react";
 import { useForm } from "react-hook-form";
 import { getFieldHelperText } from "utils";
+import { API_SERVICES_URLS } from "data";
+import { useSwrFetch } from "hooks";
 
 export const WithdrawWrapper = () => {
-  const [selected, setSelected] = useState("Cash");
+  const [selected, setSelected] = useState("CASH");
   const [amount, setAmount] = useState();
+  const [lastWithdraw, setLastWithdraw] = useState();
+  const { data, error, isLoading } = useSwrFetch(
+    API_SERVICES_URLS.FREELANCER.LAST_WITHDRAW,
+    {
+      method: "GET",
+      headers: {},
+    }
+  );
+  useEffect(() => {
+    if (data) {
+      setLastWithdraw(data.data);
+      setSelected(data.data.withdraw.typeWithdraw.toUpperCase());
+    }
+  }, [data]);
 
   const {
     register,
@@ -55,7 +71,7 @@ export const WithdrawWrapper = () => {
             <RadioGroup className="max-w-[450px] flex justify-center items-center gap-5 my-8 mx-auto">
               <RadioButton
                 selected={selected}
-                handleChange={() => handlePaymentChange("Cash")}
+                handleChange={() => handlePaymentChange("CASH")}
                 label="Cash"
                 className="flex-1 sm:flex-[0.5]"
               >
@@ -63,9 +79,14 @@ export const WithdrawWrapper = () => {
               </RadioButton>
               <RadioButton
                 selected={selected}
-                handleChange={() => handlePaymentChange("Bank")}
+                handleChange={() => handlePaymentChange("BANK")}
                 label="Bank"
-                className="flex-1 sm:flex-[0.5]"
+                className={`flex-1 sm:flex-[0.5] ${
+                  lastWithdraw &&
+                  (!lastWithdraw.isWithdrawBankPermissionGranted
+                    ? "pointer-events-none"
+                    : "")
+                }`}
               >
                 <BankIcon className="w-8" />
               </RadioButton>
@@ -115,7 +136,8 @@ export const WithdrawWrapper = () => {
             </div>
           </div>
           <div className="flex justify-center items-center"></div>
-          {selected === "Cash" ? (
+          {/* {selected === "CASH" ? <Cash /> : <Bank />} */}
+          {selected === "CASH" ? (
             <Cash selectedBalance={amount} />
           ) : (
             <Bank selectedBalance={amount} />

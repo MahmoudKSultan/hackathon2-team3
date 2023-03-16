@@ -21,7 +21,11 @@ export const API_SERVICES_URLS = {
     BANK_DETAILS: (id: string) => `/withdraw/details/${id}`,
     OFFICE_LIST: "/withdraw/office-list",
     RECIPIENTS_LIST: "/recipient/list",
-    RECIPIENT_ADD_WITH_CODE: "/recipient/send-code",
+    RECIPIENT_ADD_BEFORE_CODE: "/recipient/send-code",
+    RECIPIENT_CREATE_AFTER_CODE: "/recipient/create",
+    RECIPIENT_DELETE: (recipientId) => `/recipient/delete/${recipientId}`,
+    RECIPIENT_EDIT_BEFORE_CODE: (recipientId) =>
+      `/recipient/edit/${recipientId}`,
     // BANK_WITHDRAW: (bankid: string, )
   },
 } as const;

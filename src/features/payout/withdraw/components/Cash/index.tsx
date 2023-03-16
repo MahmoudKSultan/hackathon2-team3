@@ -2,14 +2,15 @@ import { Fragment, useState, useEffect } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { ArrowDownIcon, PlusIcon } from "lib/@heroicons";
-import { Divider, Skeleton, Modal } from "components";
+import { Divider, Skeleton, Modal, Button } from "components";
 import Option from "./../Option";
 import SelectList from "../SelectList";
 import AddRecipient from "../AddRecipient";
 import { TransferCard } from "features/payout";
-import EditRecipient from "../EditRecipient";
+import RecipientsModal from "../RecipientsModal";
 import { useSwrFetch, useModal } from "hooks";
 import { API_SERVICES_URLS } from "data";
+import { WithdrawPreview } from "./../WithdrawPreview/index";
 
 export default function Cash() {
   const [selectedOffice, setSelectedOffice] = useState();
@@ -17,6 +18,7 @@ export default function Cash() {
   const [selectedRecipient, setSelectedRecipient] = useState();
   const addModalObj = useModal();
   const editModalObj = useModal();
+  const previewWithdrawModal = useModal();
 
   const {
     data,
@@ -48,8 +50,8 @@ export default function Cash() {
       setSelectedRecipient(() => recipientsData.data.recipients[0]);
     }
   }, [recipientsData]);
-  console.log(selectedRecipient);
 
+  const handleWithdraw = () => {};
   return (
     <>
       <div className="max-w-[450px] mx-auto">
@@ -126,7 +128,7 @@ export default function Cash() {
               </Listbox.Options>
             </SelectList>
           )}
-          <div className="flex justify-end  ml-2 mt-2">
+          <div className="flex justify-end  ml-2 mt-2 mb-10">
             <span
               className="flex items-center text-sm text-blue-light cursor-pointer"
               onClick={addModalObj.openModal}
@@ -134,6 +136,13 @@ export default function Cash() {
               <PlusIcon width={"20px"} /> Add recipient
             </span>
           </div>
+          <Button
+            fullWidth={true}
+            size={"medium"}
+            onClick={previewWithdrawModal.openModal}
+          >
+            Confirm
+          </Button>
         </div>
       </div>
       <Modal {...addModalObj}>
@@ -142,19 +151,41 @@ export default function Cash() {
           title="Add Recipient"
           closeModal={addModalObj.closeModal}
         >
-          <AddRecipient />
+          <AddRecipient
+            closeModal={addModalObj.closeModal}
+            handleRecipientAdd={(newRecipient) => {
+              setRecipients([newRecipient, ...recipients]);
+            }}
+          />
         </TransferCard>
       </Modal>
-
       <Modal {...editModalObj}>
         <TransferCard
           centerTitle={false}
           title="Recipient"
           closeModal={editModalObj.closeModal}
         >
-          <EditRecipient />
+          <RecipientsModal
+            recipients={recipients}
+            deleteRecipient={(_id) =>
+              setRecipients((prev) => prev.filter((rec) => rec._id !== _id))
+            }
+            addRecipient={(newRecipient) =>
+              setRecipients([newRecipient, ...recipients])
+            }
+            selectedRecipient={selectedRecipient}
+            setSelectedRecipient={(recipient) =>
+              setSelectedRecipient(recipient)
+            }
+            closeEditModal={editModalObj.closeModal}
+          />
         </TransferCard>
       </Modal>
+      <WithdrawPreview
+        modalObj={previewWithdrawModal}
+        recipient={selectedRecipient}
+        office={selectedOffice}
+      />
     </>
   );
 }

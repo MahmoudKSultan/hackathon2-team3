@@ -1,68 +1,74 @@
-import { Image, Button } from "components";
+import { Image, Button, Divider, Modal } from "components";
 import { useState } from "react";
 import { MiniCard } from "../MiniCard";
 import { DeleteIcon, EditIcon } from "lib/@heroicons";
+import { TransferCard } from "features/payout";
 
-export const WithdrawPreview = () => {
+export const WithdrawPreview = ({ modalObj, recipient, office }) => {
   return (
-    <div className="flex flex-col gap-4 justify-center">
-      <div className="flex flex-col items-center">
-        <p className=" text-gray-dark">Amount:</p>
-        <p className="text-blue-light text-4xl font-semibold">300.00 USD</p>
-      </div>
-      <div>
-        <p>Transferred to:</p>
-        <MiniCard>
-          <div className="flex gap-5 items-center">
-            <Image
-              src="/assets/img/bank.svg"
-              width={40}
-              height={40}
-              alt="Bank"
-            />
-            <div>
-              <p>Bank of Palestine - Safa Mousa</p>
-              <p>0452-1064559-001-3100-000</p>
-            </div>
-          </div>
-        </MiniCard>
-      </div>
-
-      <MiniCard>
-        <div className="flex justify-between">
-          <div>
-            <p>Transfer amount</p>
-            <p>Fee</p>
-          </div>
-          <div>
-            <p>$300</p>
-            <p>Free</p>
-          </div>
-        </div>
-        <hr className="my-1 bg-gray-dark h-0.5 "></hr>
-        <div className="flex justify-between">
-          <p>You'll get</p>
-          <p>$300</p>
-        </div>
-      </MiniCard>
-      <ul className="space-y-1 list-disc list-inside p-4">
-        <li>Estimated arrival: 2 business days.</li>
-        <li>Transfers made after 9:00 PM or on weekends takes longer.</li>
-        <li>
-          All transfers are subject to review and could be delayed or stopped if
-          we identify an issue.
-        </li>
-      </ul>
-
-      <Button
-        type="submit"
-        buttonSize="small"
-        fullWidth
-        className="text-2xl bg-blue-light"
+    <Modal {...modalObj}>
+      <TransferCard
+        centerTitle={true}
+        title="Transfer Preview"
+        closeModal={modalObj.closeModal}
       >
-        Confirm
-      </Button>
-    </div>
+        <div className="text-center mb-5">
+          <p className="text-sm font-bold text-[#8C8C8C]">Amount</p>
+          <h2 className="font-bold text-3xl text-[#4375FF]">240.00 USD</h2>
+        </div>
+        <div>
+          <p className="text-sm text-[#8C8C8C] mb-2">Transferred to:</p>
+          <MiniCard className="flex items-center justify-end mb-3 text-right gap-4">
+            <div className="desc">
+              <p className="text-sm text-blue-light">
+                {office.name} - {recipient.name}
+              </p>
+              <p className="text-sm text-black">{office.address}</p>
+            </div>
+            <Image
+              src="/assets/img/bank.png"
+              alt="bankd image"
+              width={35}
+              height={35}
+            />
+          </MiniCard>
+          <MiniCard className="text-black text-sm mb-3">
+            <div className="flex justify-between items-center ">
+              <p>Transfer amount</p>
+              <p>$300</p>
+            </div>
+            <div className="flex justify-between items-center ">
+              <p>Fee</p>
+              <p>{office.fees == 0 ? office.fees : "Free"}</p>
+            </div>
+            <Divider />
+            <div className="flex justify-between items-center ">
+              <p>You'll get</p>
+              <p>$300</p>
+            </div>
+          </MiniCard>
+          {/* list of advises */}
+          <ul className="text-sm mb-10 px-7">
+            <li className='mb-2 before:content-["-"] -indent-1.5'>
+              {" "}
+              Estimated arrival: 2 business days.
+            </li>
+            <li className='mb-2 before:content-["-"] -indent-1.5'>
+              {" "}
+              Transfers made after 9:00 PM or on weekends takes longer.
+            </li>
+            <li className='mb-2 before:content-["-"] -indent-1.5'>
+              {" "}
+              All transfers are subject to review and could be delayed or
+              stopped if we identify an issue.
+            </li>
+          </ul>
+          <Button fullWidth={true} onClick={modalObj.closeModal}>
+            Confirm
+          </Button>
+        </div>
+      </TransferCard>
+    </Modal>
   );
 };
 export default WithdrawPreview;

@@ -5,3 +5,4 @@ export * from "./Bank";
 export * from "./WithdrawWrapper";
 export * from "./AddRecipient";
 export * from "./SelectList";
+export * from "./DeleteModal";

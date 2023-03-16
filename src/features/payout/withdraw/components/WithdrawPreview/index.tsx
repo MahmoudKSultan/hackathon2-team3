@@ -1,4 +1,4 @@
-import { Image, Button } from "components";
+import { Image, Button, Divider, Modal } from "components";
 import { useState } from "react";
 import { MiniCard } from "../MiniCard";
 import { DeleteIcon, EditIcon } from "lib/@heroicons";
@@ -6,7 +6,13 @@ import useFetch from "../../hook/useFetch";
 import { getCookie } from "lib/js-cookie";
 import { COOKIES_KEYS } from "data";
 
-export const WithdrawPreview = ({ selectedBank, selectedBalance }: any) => {
+export const WithdrawPreview = ({
+  selectedBank,
+  selectedBalance,
+  recipient,
+  office,
+  dir = "rtl",
+}: any) => {
   const currentUser = getCookie(COOKIES_KEYS.currentUser);
 
   const { fetchData, isLoading, error } = useFetch();
@@ -41,21 +47,38 @@ export const WithdrawPreview = ({ selectedBank, selectedBalance }: any) => {
       <div>
         <p>Transferred to:</p>
         <MiniCard>
-          <div className="flex gap-5 items-center">
-            <Image
-              src="/assets/img/bank.svg"
-              width={40}
-              height={40}
-              alt="Bank"
-            />
-            <div>
-              <p>
-                {selectedBank?.bankName} - {selectedBank?.accountName}
-              </p>
-              <p>
-                {selectedBank?.accountNumber}-001-{selectedBank?.ledger}-000
-              </p>
-            </div>
+          <div>
+            {dir == "ltr" && selectedBank ? (
+              <div className="flex gap-4" dir={dir}>
+                <Image
+                  src="/assets/img/bank.png"
+                  alt="bankd image"
+                  width={35}
+                  height={35}
+                />
+                <div>
+                  <p>
+                    {selectedBank?.bankName} - {selectedBank?.accountName}
+                  </p>
+                  <p>
+                    {selectedBank?.accountNumber}-001-{selectedBank?.ledger}-000
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="flex text-right gap-4" dir={dir}>
+                <Image
+                  src="/assets/img/bank.png"
+                  alt="bankd image"
+                  width={35}
+                  height={35}
+                />
+                <div>
+                  <p>{office?.name}</p>
+                  <p>{office?.address}</p>
+                </div>
+              </div>
+            )}
           </div>
         </MiniCard>
       </div>
@@ -63,10 +86,12 @@ export const WithdrawPreview = ({ selectedBank, selectedBalance }: any) => {
       <MiniCard>
         <div className="flex justify-between">
           <div>
+            {recipient && <p>Recipient name</p>}
             <p>Transfer amount</p>
             <p>Fee</p>
           </div>
           <div>
+            {recipient && <p>{recipient.name}</p>}
             <p>${selectedBalance}</p>
             <p>Free</p>
           </div>

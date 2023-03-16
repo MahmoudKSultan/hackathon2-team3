@@ -164,6 +164,7 @@ export const Bank = ({ selectedBalance }: any) => {
           <WithdrawPreview
             selectedBank={selectedBank}
             selectedBalance={selectedBalance}
+            dir="ltr"
           />
         </TransferCard>
       </Modal>

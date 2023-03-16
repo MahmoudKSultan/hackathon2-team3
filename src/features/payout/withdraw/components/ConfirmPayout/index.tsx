@@ -1,4 +1,4 @@
-import { Image, Button, OtpInput } from "components";
+import { Image, Button, OtpInput, HelperText } from "components";
 import { COOKIES_KEYS } from "data";
 import { getCookie } from "lib/js-cookie";
 import { useState } from "react";
@@ -42,29 +42,33 @@ export const ConfirmPayout = ({
             bankName: "Bank of Palesine",
           }),
     };
-    console.log({
-      ...data,
-      code: otpCode,
-      bankName: "Bank of Palesine",
-    });
-
-    await fetchData(
-      options,
-      `${
-        selectedItemBank._id ? `bank/edit/${selectedItemBank._id}` : "bank/add"
-      }`
-    );
+    // console.log({
+    //   ...data,
+    //   code: otpCode,
+    //   bankName: "Bank of Palesine",
+    // });
+    data.idNumber
+      ? await fetchData(options, "recipient/create")
+      : await fetchData(
+          options,
+          `${
+            selectedItemBank?._id
+              ? `bank/edit/${selectedItemBank?._id}`
+              : "bank/add"
+          }`
+        );
+    console.log(data);
   };
 
   return (
     <div className="flex flex-col gap-8  items-center">
       <Image
         src="/assets/img/smartphone.svg"
-        width={50}
-        height={75}
+        width={40}
+        height={50}
         alt="confirm"
       />
-      <p>
+      <p className="w-[280px]">
         We have sent you a verification code to your phone number ********789
       </p>
       <form
@@ -75,7 +79,7 @@ export const ConfirmPayout = ({
         <CountdownTimer targetDate={dateTimeAfterTwoMinutes} />
         <p>
           Didn't get the code?
-          <span className="text-blue-light cursor-pointer">Resend</span>
+          <span className="text-blue-light cursor-pointer"> Resend</span>
         </p>
         <Button
           type="submit"
@@ -88,6 +92,12 @@ export const ConfirmPayout = ({
         >
           Continue
         </Button>
+        {error && (
+          <HelperText
+            className="text-red w-full text-xs justify-center min-h-[20px] mb-8"
+            text={error}
+          />
+        )}
       </form>
     </div>
   );

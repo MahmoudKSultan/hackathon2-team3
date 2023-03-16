@@ -4,6 +4,7 @@ import { Children } from "types";
 export function MiniCard({
   children,
   className = "",
+  ...reset
 }: {
   children: Children;
   className?: string;

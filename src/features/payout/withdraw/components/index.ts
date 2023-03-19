@@ -1,5 +1,5 @@
-export * from "./TransferCard"
-export * from "./MiniCard"
+export * from "./TransferCard";
+export * from "./MiniCard";
 export * from "./Cash";
 export * from "./Bank";
 export * from "./WrapBalance";
@@ -8,3 +8,7 @@ export * from "./ModalAddRecipient";
 export * from "./SelectListBox";
 export * from './SelectCheckBox';
 export * from './Transaction';
+export * from "./WithdrawWrapper";
+export * from "./AddRecipient";
+export * from "./SelectList";
+export * from "./DeleteModal";

@@ -9,16 +9,19 @@ import {
   InformationCircleIcon as InformationCircleIconMini,
   CheckIcon as CheckIconMini,
  Bars3CenterLeftIcon as  BarsIcon
+  ChevronDownIcon as ChevronDownIconMini,
 } from "@heroicons/react/20/solid";
-import { InformationCircleIcon ,
-  HomeIcon as HomeIcon,
+import {
+  InformationCircleIcon,
+  HomeIcon,
   QuestionMarkCircleIcon as HelpIcon,
-  PhoneIcon as PhoneIcon,
+  PhoneIcon,
   ClipboardDocumentListIcon as InvoiceIcon,
   ArrowRightOnRectangleIcon as LogoutIcon,
   Cog8ToothIcon as SettingIcon,
   PaperAirplaneIcon as PaperAirplane,
-  ArrowDownTrayIcon as ArrowDoewnIcon,
+  ArrowDownTrayIcon as DownoldIcon,
+  ChevronDownIcon as ArrowDownIcon,
   Bars3Icon as BurgerIcon,
   TrashIcon as DeleteIcon,
   PencilIcon as EditIcon,
@@ -28,6 +31,7 @@ import { InformationCircleIcon ,
   ChevronLeftIcon as ArrowLeft ,
   ChevronRightIcon as ArrowRight ,
   
+  PlusSmallIcon as PlusIcon,
 } from "@heroicons/react/24/outline";
 
 export {
@@ -48,7 +52,7 @@ export {
   LogoutIcon,
   SettingIcon,
   PaperAirplane,
-  ArrowDoewnIcon,
+  DownoldIcon,
   BurgerIcon,
   DeleteIcon,
   EditIcon,
@@ -58,4 +62,8 @@ export {
   BarsIcon,
   ArrowRight,
   ArrowLeft
+  ArrowDownIcon,
+  PlusIcon,
+  ChevronDownIconMini,
+
 };

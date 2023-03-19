@@ -8,11 +8,10 @@ import {
   ArrowDoewnIcon,
   ArrowLeft,
   ArrowRight,
-  ChevronIcon,
   SearchIcon,
 } from "lib/@heroicons";
 import SelectCheckBox from "../SelectCheckBox";
-import { options } from "features/payout/data";
+
 
 const BalanceTransactionsFetcher = async (url: string) => {
   const currentUser = getCookie(COOKIES_KEYS.currentUser);
@@ -26,6 +25,7 @@ const BalanceTransactionsFetcher = async (url: string) => {
   return res.data.data;
 };
 
+
 const Transaction = ({ columns }) => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
@@ -38,6 +38,9 @@ const Transaction = ({ columns }) => {
     BalanceTransactionsFetcher
   );
 
+ 
+
+
   const PaginationNext = () => {
     setOffset(offset + tranPersage);
     setCurrentPage(currentPage + 1);
@@ -47,9 +50,7 @@ const Transaction = ({ columns }) => {
     setCurrentPage(currentPage - 1);
   };
 
-
-
-
+  
 
   return (
     <>
@@ -69,7 +70,7 @@ const Transaction = ({ columns }) => {
             <span>Withdraw</span>
           </Button>
           <SelectCheckBox
-            selectedOptions={selectedOptions}  
+            selectedOptions={selectedOptions}
             setSelectedOptions={setSelectedOptions}
           />
         </div>
@@ -117,18 +118,7 @@ const Transaction = ({ columns }) => {
                 (column: {
                   id: React.Key | null | undefined;
                   className: string | undefined;
-                  header:
-                    | string
-                    | number
-                    | boolean
-                    | React.ReactFragment
-                    | React.ReactPortal
-                    | React.ReactElement<
-                        any,
-                        string | React.JSXElementConstructor<any>
-                      >
-                    | null
-                    | undefined;
+                  header: string | number;
                 }) => (
                   <td key={column.id} className={column.className}>
                     <div className="flex flex-row content-center">
@@ -138,6 +128,7 @@ const Transaction = ({ columns }) => {
                           onClick={() => setSort(`${column.id}`)}
                           className="text-xs"
                         >
+                          {" "}
                           ▲
                         </span>
                         <span
@@ -154,7 +145,7 @@ const Transaction = ({ columns }) => {
             </tr>
           </thead>
           <tbody>
-            {data &&
+            { data &&
               data?.withdraws?.map(
                 (row: {
                   _id: React.Key | null | undefined;
@@ -167,18 +158,7 @@ const Transaction = ({ columns }) => {
 
                     accountName: string;
                   };
-                  createdAt:
-                    | string
-                    | number
-                    | boolean
-                    | React.ReactElement<
-                        any,
-                        string | React.JSXElementConstructor<any>
-                      >
-                    | React.ReactFragment
-                    | React.ReactPortal
-                    | null
-                    | undefined;
+                  createdAt: string | number | null | undefined;
                   amount: {
                     toString: () => string | number;
                   };
@@ -187,7 +167,10 @@ const Transaction = ({ columns }) => {
                   };
                   status: string;
                 }) => (
-                  <tr key={row._id} className="border-y text-base h-[75px]">
+                  <tr
+                    key={row._id}
+                    className="border-y text-base h-[75px] hover:bg-[#FAFCFF]"
+                  >
                     {
                       <>
                         <td className="pl-8 text-[#707070] font-[600]">
@@ -210,12 +193,11 @@ const Transaction = ({ columns }) => {
                             <td>{row.bank.accountName}</td>
                           )}
                         </td>
-                        <td className="font-[600]">
+                        <td className="font-[600] text-[#DDAC54]">
                           {row.status}
                           <p className="text-[#BEC2C6] text-sm font-normal">
-                            {row.status === "pending"
-                              ? "Expected within 24 hours"
-                              : null}
+                            {row.status === "pending" &&
+                              "Expected within 24 hours"}
                           </p>
                         </td>
                       </>
@@ -223,6 +205,7 @@ const Transaction = ({ columns }) => {
                   </tr>
                 )
               )}
+                  
             <tr>
               <td></td>
               <td className=" text-[#9E9E9E] flex content-center  ">

@@ -34,7 +34,8 @@ const Transaction = ({ columns }) => {
   const [tranPersage, setTranPerPage] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
   const { data, error, isLoading } = useSWR(
-    `https://talents-valley-backend.herokuapp.com/api/withdraw/list?offset=${offset}&limit=${tranPersage}&sort=${sort}&filter=${selectedOptions}&search=${search}`,
+    `${API_SERVICES_URLS.FREELANCER.WITHDRAWAL_LIST}?offset=${offset}&limit=${tranPersage}&sort=${sort}${
+      selectedOptions?`&filter=${selectedOptions}`:""}&search=${search}`,
     BalanceTransactionsFetcher
   );
 

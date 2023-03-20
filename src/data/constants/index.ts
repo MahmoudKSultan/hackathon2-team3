@@ -24,6 +24,7 @@ export const API_SERVICES_URLS = {
     RECIPIENT_ADD_BEFORE_CODE: "/recipient/send-code",
     RECIPIENT_CREATE_AFTER_CODE: "/recipient/create",
     RECIPIENT_DELETE: (recipientId) => `/recipient/delete/${recipientId}`,
+    WITHDRAWAL_LIST:'/withdraw/list',
     RECIPIENT_EDIT_BEFORE_CODE: (recipientId) =>
       `/recipient/edit/${recipientId}`,
     // BANK_WITHDRAW: (bankid: string, )
